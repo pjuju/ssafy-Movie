@@ -28,11 +28,11 @@ export default {
     popular: () => HOST + MOVIES + 'popular/',
 
     // 알고리즘
-    likemovies: (username) => HOST + MOVIES + 'like_list/' + `${username}/`,
-    likewatchedmovies: (username) => HOST + MOVIES + RECOMMEND + `${username}/` + 'like_watch/',
-    gendermovies: (username) => HOST + MOVIES + RECOMMEND + `${username}/` + 'user_gender/',
-    agemovies: (username) => HOST + MOVIES + RECOMMEND + `${username}/` + 'user_age/',
-    followmovies: (username) => HOST + MOVIES + RECOMMEND + `${username}/` + 'user_follow/',
+    likemovies: () => HOST + MOVIES + 'like_list/',
+    likewatched: () => HOST + MOVIES + RECOMMEND + 'like_watch/',
+    gendermovies: () => HOST + MOVIES + RECOMMEND + 'user_gender/',
+    agemovies: () => HOST + MOVIES + RECOMMEND + 'user_age/',
+    followmovies: () => HOST + MOVIES + RECOMMEND + 'user_follow/',
 
 
 

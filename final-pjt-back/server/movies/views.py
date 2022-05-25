@@ -307,7 +307,7 @@ def user_gender(request):
 
 
 @api_view(['GET'])
-def like_watch(request, username):
+def like_watch(request):
     username = request.user.username
     user = get_object_or_404(User, username=username)   
     genre_list = []    
@@ -326,6 +326,6 @@ def like_watch(request, username):
     common_genres = [i[0] for i in Counter(genre_list).most_common()][:3]
     
     # 영화데이터에서 장르가 내가 좋아하는 common_geres에 있는 영화들을 populariry로 정렬하여 맨앞 15개 가져옴 
-    movie_list = Movie.objects.filter(genres__in=common_genres).order_by('-popularity')[:15]  
+    movie_list = Movie.objects.filter(genres__in=common_genres, vote_count__gte=5000).distinct().order_by('-vote_average')[:15]
     serializer = MovieListSerializer(movie_list, many=True)       
     return Response(serializer.data)

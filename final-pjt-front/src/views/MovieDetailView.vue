@@ -6,7 +6,7 @@
           <img class="p-4" :src="movieimgUrl" alt="">
           <div class="movie-text ms-3">
             <h1 class="d-flex justify-content-start pt-4">{{movie.title}}</h1>
-            <p class="text-start ps-2">"{{movie.tagline}}"</p>
+            <p v-show="movie.tagline" class="text-start ps-2">"{{movie.tagline}}"</p>
             <hr>
             <div class="d-flex justify-content-start ps-2">
             <span class="genres" v-for="genre in movie.genres" :key="genre.id">{{genre.name}}</span>
@@ -14,21 +14,21 @@
             <div class="text-start ps-2" style="width:80%">
             <span>{{movie.release_date}} | {{movie.runtime}}분</span>           
             <p class="pt-4">{{movie.overview}}</p>
-            <span>
-              <span v-for="user in movie.like_users" :key="user.pk">
-                <div>
-                  <button v-if="user.username === currentUser.username">NO HEART</button>
-                  <button v-else>HEART</button>
-                </div>
-              </span>
-              <!-- <button @click="onLike">좋아요</button> -->
-            </span>
-            <button>이미시청</button>
-            </div>
+
+            <!-- 좋아요 watched 구현 -->
+              <i v-if="isLiked" @click="clickLike" class="fa-solid fa-heart" style="color:red; cursor:pointer;"></i>
+              <i v-if="!isLiked" @click="clickLike" class="fa-regular fa-heart" style="color:red; cursor:pointer;"></i>
+              <i v-if="!isWatched" @click="clickWatch" class="fa-solid fa-eye" style="color:black; cursor:pointer; "></i>
+              <i v-if="isWatched" @click="clickWatch" class="fa-solid fa-eye-slash" style="color:black; cursor:pointer;"></i>
+
+          </div>
           </div>      
         </div>
       </div>
     </div>
+
+
+
     <hr>
     <div>
       <router-link :to="{name: 'review'}" class="text-decoration-none text-white">
@@ -40,39 +40,28 @@
       </div>
       <div v-if="isLoggedIn">
         <i class="fa-solid fa-pen-to-square" @click="reviewNew">리뷰쓰기</i>
-        <div>
-          <i class="fa-solid fa-bookmark"></i>
-          <p>여기</p>
-        </div>
       </div>
-      <div>
-        <div v-for="review in movie.reviews" :key="review.pk">
-
-          <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span class="text-black">
-                <i style="color:red;" class="fa-solid fa-star"></i>
-                {{review.rank}}
-
-            <router-link :to="{name: 'reviewDetail', params: {moviePk: movie.id, reviewPk: review.id} }" class="ms-2">
-              {{review.title}}
-            </router-link>
-            </span>
-              <span class="badge bg-primary rounded-pill">{{review.comments_count}}</span>
-            </li>
-          </ul>
-
-       </div>
+      <br>
+    
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div v-for="review in movie.reviews" :key="review.pk"
+       class="card col border-light m-3" style="max-width: 18rem;">
+      <div class="card-header">
+        <i style="color:red;" class="fa-solid fa-star"></i>
+          {{review.rank}}
+          <small class="text-muted">{{review.user.username}}</small>
       </div>
-      <div v-for="review in movie.reviews" :key="review.pk">
-      <div class="card border-light mb-3" style="max-width: 18rem;">
-  <div class="card-header">Header</div>
-  <div class="card-body">
-    <h5 class="card-title">Light card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  </div>
-</div>
+      <router-link :to="{name: 'reviewDetail', params: {moviePk: movie.id, reviewPk: review.id} }" 
+        class="text-decoration-none text-black">
+      <div class="card-body">
+      <h5 class="card-title">{{review.title}}</h5>
+        <p class="card-text">{{review.content | cutLength}}</p>
+        <div><i class="fa-solid fa-comment"></i> {{review.comments_count}} </div>
+        <p><small class="text-muted">{{review.created_at | yyyyMMdd}}</small></p>
       </div>
+      </router-link>
+      </div>
+    </div>
       
     </div>
 
@@ -93,22 +82,82 @@ export default {
   data(){
     return{
       moviePk: this.$route.params.moviePk,
-      isLiked: '',
+      isLiked: false,
+      isWatched: false,
     }
   },
   computed:{
-    ...mapGetters(['movie', 'movieimgUrl', 'moviebackimgUrl', 'isLoggedIn','currentUser'])
+    ...mapGetters(['movie', 'movieimgUrl', 'moviebackimgUrl',
+     'isLoggedIn','currentUser']),
+
   },
   methods:{
-    ...mapActions(['fetchMovie',]),
+    ...mapActions(['fetchMovie', 'likeMovie', 'watchMovie']),
     reviewNew(){
       this.$router.push({name: 'reviewNew', params: {moviePk: this.movie.id}})
+    },
+    onLike(){            
+      const like_users = JSON.parse(JSON.stringify(this.movie.like_users))
+      if (like_users.some(user => user.pk === this.currentUser.pk)){
+        this.isLiked = true
+      }
+      else {this.isLiked = false}      
+    },
+    clickLike(){
+      const moviePk = this.movie.id      
+      this.likeMovie(moviePk)
+    },
+
+    onWatch(){            
+      const like_users = JSON.parse(JSON.stringify(this.movie.watched_users))
+      if (like_users.some(user => user.pk === this.currentUser.pk)){
+        this.isWatched = true
+      }
+      else {this.isWatched = false}      
+    },
+    clickWatch(){
+      const moviePk = this.movie.id      
+      this.watchMovie(moviePk)
+      // this.fetchMovie(moviePk)
     },
 
 
   },
   created(){
     this.fetchMovie(this.moviePk)
+  },
+  updated(){
+    this.onLike()
+    this.onWatch()
+  },
+  filters : {  
+    yyyyMMdd(value){ 
+            if(value == '') return '';
+            
+            var js_date = new Date(value);
+            // 연도, 월, 일 추출
+            var year = js_date.getFullYear();
+            var month = js_date.getMonth() + 1;
+            var day = js_date.getDate();
+
+            if(month < 10){
+              month = '0' + month;
+            }
+
+            if(day < 10){
+              day = '0' + day;
+            }
+
+            return year + '-' + month + '-' + day;
+    },
+    cutLength(value){
+      if(value.length > 30){
+        return value.slice(0, 30) + '...'
+      }
+      else{
+        return value
+      }
+    }
   }
 }
 </script>
@@ -125,12 +174,25 @@ export default {
 .genres:not(:first-of-type)::before{
   content: "/";
 }
-i {
+
+.fa-pen-to-square {
   cursor: pointer;
 }
 .list-group {
   margin: 0 auto; 
   width:60%;
+}
+.card {
+  color: black;
+}
+.fa-comment{
+  color: rgb(70, 70, 201)
+}
+.i-button{
+  cursor:pointer;
+}
+.eye{
+  color:black;
 }
 
 </style>

@@ -20,7 +20,10 @@ export default {
     nowPlaying: {},
     upComing:{},
     likeMovies:{},
-
+    likeWatched:{},
+    genderMovies:{},
+    ageMovies:{},
+    followMovies: {},
     isLiked: null,
   },
   getters:{
@@ -29,7 +32,10 @@ export default {
     nowPlaying: state => state.nowPlaying,
     upComing: state => state.upComing,
     likeMovies: state => state.likeMovies,
-
+    likeWatched: state => state.likeWatched,
+    genderMovies: state => state.genderMovies,
+    ageMovies: state => state.ageMovies,
+    followMovies: state => state.followMovies,
     movieimgUrl: state => state.movieimgUrl,
     moviebackimgUrl: state => state.moviebackimgUrl,
 
@@ -52,6 +58,18 @@ export default {
     FETCH_LIKE_MOVIES(state, movies){
       state.likeMovies = movies
     },
+    FETCH_LIKE_WATCHED(state, movies){
+      state.likeWatched = movies
+    },
+    FETCH_GENDER_MOVIES(state, movies){
+      state.genderMovies = movies
+    },
+    FETCH_AGE_MOVIES(state, movies){
+      state.ageMovies = movies
+    },
+    FETCH_FOLLOW_MOVIES(state, movies){
+      state.followMovies = movies
+    }
 
   },
   actions:{
@@ -74,8 +92,7 @@ export default {
         url: drf.movies.nowPlaying(),
       })  
       .then(res=>{
-        const nowPlaying = res.data.results
-        commit('FETCH_NOW_PLAYING', nowPlaying)
+        commit('FETCH_NOW_PLAYING', res.data.results)
       })
       .catch(err=>{
         console.log(err.response)
@@ -93,14 +110,66 @@ export default {
         console.log(err.response)
       })
     },
-    fetchLikeMovies({commit}, username){
+    fetchLikeMovies({commit, getters}){
       axios({
         method:'get',
-        url: drf.movies.likemovies(username),
+        url: drf.movies.likemovies(),
+        headers: getters.authHeader,
       })  
       .then(res=>{
-        console.log(res.data.results)
-        commit('FETCH_LIKE_MOVIES', res.data.results)
+        commit('FETCH_LIKE_MOVIES', res.data)
+      })
+      .catch(err=>{
+        console.log(err.response)
+      })
+    },
+    fetchLikeWatched({commit, getters}){
+      axios({
+        method:'get',
+        url: drf.movies.likewatched(),
+        headers: getters.authHeader,
+      })  
+      .then(res=>{
+        commit('FETCH_LIKE_WATCHED', res.data)
+      })
+      .catch(err=>{
+        console.log(err.response)
+      })
+    },
+    fetchGenderMovies({commit, getters}){
+      axios({
+        method:'get',
+        url: drf.movies.gendermovies(),
+        headers: getters.authHeader,
+      })  
+      .then(res=>{
+        commit('FETCH_GENDER_MOVIES', res.data)
+      })
+      .catch(err=>{
+        console.log(err.response)
+      })
+    },
+    fetchAgeMovies({commit, getters}){
+      axios({
+        method:'get',
+        url: drf.movies.agemovies(),
+        headers: getters.authHeader,
+      })  
+      .then(res=>{
+        commit('FETCH_AGE_MOVIES', res.data)
+      })
+      .catch(err=>{
+        console.log(err.response)
+      })
+    },
+    fetchFollowMovies({commit, getters}){
+      axios({
+        method:'get',
+        url: drf.movies.followmovies(),
+        headers: getters.authHeader,
+      })  
+      .then(res=>{
+        commit('FETCH_FOLLOW_MOVIES', res.data)
       })
       .catch(err=>{
         console.log(err.response)
@@ -119,5 +188,31 @@ export default {
         console.log(err.response)
       })
     },
+    likeMovie({getters, dispatch}, moviePk){      
+      axios({
+        method:'post',
+        url: drf.movies.likemovie(moviePk),        
+        headers: getters.authHeader,
+      })
+      .then(()=>{
+        dispatch('fetchMovie', moviePk)
+      })
+      .catch(err =>
+        console.log(err.response))
+    },    
+    watchMovie({getters, dispatch}, moviePk){      
+      axios({
+        method:'post',
+        url: drf.movies.watchedmovie(moviePk),        
+        headers: getters.authHeader,
+      })
+      .then(()=>{
+        dispatch('fetchMovie', moviePk)
+      })
+      .catch(err =>
+        console.log(err.response))
+    },
+
+
   },
 }
