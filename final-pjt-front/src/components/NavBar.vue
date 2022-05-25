@@ -23,7 +23,7 @@
         <div v-if="isLoggedIn">
         <b-nav-item-dropdown :text="currentUser.username" right>
           <b-dropdown-item>
-            <router-link :to=" { name: 'review' }" class="text-decoration-none text-black">내 정보</router-link>
+            <router-link :to=" { name: 'profile', params: { username: currentUser.username } }" class="text-decoration-none text-black">내 정보</router-link>
           </b-dropdown-item>
           <b-dropdown-item @click="logout" class="text-black">로그아웃</b-dropdown-item>
         </b-nav-item-dropdown>

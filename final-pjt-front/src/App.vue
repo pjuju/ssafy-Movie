@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <nav-bar></nav-bar>
+    <div class="padding">
     <router-view/>
+    <br>
+    <br>
+    </div>
   </div>
 </template>
 
@@ -34,9 +38,19 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
-  background-color: black;
+  background-color: rgb(1, 9, 20);
   height: 100hv;
 }
+
+html { 
+  background-color:black
+}
+
+.padding {
+  padding: 0vw 10vw;
+  
+}
+
 
 nav {
   padding: 30px;
