@@ -2,20 +2,18 @@
   <div id="app">
     <nav-bar></nav-bar>
     <router-view/>
-    <footer-bar></footer-bar>
   </div>
 </template>
 
 <script>
 // import axios from 'axios'
 import NavBar from '@/components/NavBar.vue'
-import FooterBar from '@/components/FooterBar.vue'
 import { mapActions } from 'vuex'
 
 export default {
   name: 'App',
   components:{
-    NavBar, FooterBar
+    NavBar
   },
   methods:{
     ...mapActions(['fetchCurrentUser'])
@@ -36,7 +34,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
-  background-color: rgb(34, 31, 31);
+  background-color: black;
+  height: 100hv;
 }
 
 nav {
@@ -45,7 +44,7 @@ nav {
 
 nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: white;
 }
 
 nav a.router-link-exact-active {

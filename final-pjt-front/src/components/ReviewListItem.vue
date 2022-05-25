@@ -19,7 +19,7 @@
         </p>
 
         <i class="fa-solid fa-comment"></i> {{review.comments_count}}
-        <i class="fa-solid fa-heart" style="color:red;"></i> 3
+        <i class="fa-solid fa-heart" style="color:red;"></i> {{likeCount}}
         <p>
         <small class="text-muted">{{review.user.username}}</small>
         </p>
@@ -40,6 +40,9 @@ export default {
     poster(){
       return 'https://image.tmdb.org/t/p/w500' + this.review.movie.poster_path
     },
+    likeCount(){
+      return this.review.like_users?.length
+    }
   },
   filters:{
       cutLength(value){

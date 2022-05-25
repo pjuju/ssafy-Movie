@@ -1,153 +1,161 @@
 <template>
   <div class="movie-list">
-    <h1>POPULAR MOVIE</h1>
+    <p class="d-flex justify-content-start ms-3 fs-4">지금 인기있는 영화</p>
     <vue-glide v-if="popular.length"
       class="glide__track"
       data-glide-el="track"
       ref="slider"
       type="carousel"
-      :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 5}, 1000: {perView: 3} }"
+      :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
       :gap="10">
       <vue-glide-slide v-for="movie in popular" :key="movie.id">
         <movie-card :movie="movie" />
       </vue-glide-slide>
     </vue-glide>
 
-    <h1>Upcoming</h1>
+    <p class="d-flex justify-content-start ms-3 fs-4">출시 예정 영화</p>
     <vue-glide v-if="upComing.length"
       class="glide__track"
       data-glide-el="track"
       ref="slider"
       type="carousel"
-      :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 5}, 1000: {perView: 3} }"
+      :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
       :gap="10">
       <vue-glide-slide v-for="movie in upComing" :key="movie.id">
         <movie-card :movie="movie" />
       </vue-glide-slide>
     </vue-glide>
 
-    <h1>NOW PLAYING</h1>
-    <vue-glide v-if="nowPlaying.length > 7"
+    <p class="d-flex justify-content-start ms-3 fs-4">현재 상영 중인 영화</p>
+    <vue-glide v-if="nowPlaying.length > 8"
       class="glide__track"
       data-glide-el="track"
       ref="slider"
       type="carousel"
-      :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 5}, 1000: {perView: 3} }"
+      :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
       :gap="10">
       <vue-glide-slide v-for="movie in nowPlaying" :key="movie.id">
         <movie-card :movie="movie" />
       </vue-glide-slide>
     </vue-glide>
-    <div v-if="nowPlaying.length <= 7">
+    <div v-if="nowPlaying.length <= 8">
       <div v-for="movie in nowPlaying" :key="movie.id">
         <movie-card :movie="movie" />
       </div>
     </div>
 
     <div v-if="likeMoviesLength">
-    <h1>내가 찜한 영화</h1>
-    <div v-if="likeMoviesLength > 7">
+    <p class="d-flex justify-content-start ms-3 fs-4">내가 찜한 영화</p>
+    <div v-if="likeMoviesLength > 8">
       <vue-glide 
         class="glide__track"
         data-glide-el="track"
         ref="slider"
         type="carousel"
-        :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 5}, 1000: {perView: 3} }"
+        :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
         :gap="10">
         <vue-glide-slide v-for="movie in likeMovies" :key="movie.id">
           <movie-card :movie="movie" />
         </vue-glide-slide>
       </vue-glide>
     </div>
-    <div class="container" v-if="likeMoviesLength <= 7">
+    <div class="d-flex justify-content-start" v-if="likeMoviesLength <= 8">
       <div id="littlecount" v-for="movie in likeMovies" :key="movie.id">
-        <movie-card :movie="movie" />
+        <div class="me-4">
+          <movie-card :movie="movie" />
+        </div>
       </div>
     </div>
     </div>
 
     <div v-if="likeWatchedLength">
-    <h1>like + watched</h1>
-    <div v-if="likeWatchedLength > 7">
+    <p class="d-flex justify-content-start ms-3 fs-4">내가 본 영화와 비슷한 영화 </p>
+    <div v-if="likeWatchedLength > 8">
       <vue-glide 
         class="glide__track"
         data-glide-el="track"
         ref="slider"
         type="carousel"
-        :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 5}, 1000: {perView: 3} }"
+        :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
         :gap="10">
         <vue-glide-slide v-for="movie in likeWatched" :key="movie.id">
-          <movie-card :movie="movie" />
+            <movie-card :movie="movie" />
         </vue-glide-slide>
       </vue-glide>
     </div>
-    <div class="container" v-if="likeWatchedLength <= 7">
+    <div class="d-flex justify-content-start" v-if="likeWatchedLength <= 8">
       <div id="littlecount" v-for="movie in likeWatched" :key="movie.id">
-        <movie-card :movie="movie" />
+        <div class="me-4">
+          <movie-card :movie="movie" />
+        </div>
       </div>
     </div>
     </div>
 
     <div v-if="genderMoviesLength">
-    <h1>gender movies</h1>
-    <div v-if="genderMoviesLength > 7">
+    <p class="d-flex justify-content-start ms-3 fs-4">내 성별이 좋아하는 영화</p>
+    <div v-if="genderMoviesLength > 8">
       <vue-glide 
         class="glide__track"
         data-glide-el="track"
         ref="slider"
         type="carousel"
-        :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 5}, 1000: {perView: 3} }"
+        :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
         :gap="10">
         <vue-glide-slide v-for="movie in genderMovies" :key="movie.id">
           <movie-card :movie="movie" />
         </vue-glide-slide>
       </vue-glide>
     </div>
-    <div class="container" v-if="genderMoviesLength <= 7">
+    <div class="d-flex justify-content-start" v-if="genderMoviesLength <= 8">
       <div id="littlecount" v-for="movie in genderMovies" :key="movie.id">
-        <movie-card :movie="movie" />
+        <div class="me-4">
+          <movie-card :movie="movie" />
+        </div>
       </div>
     </div>
     </div>
 
   <div v-if="ageMoviesLength">
-    <h1>AGE movies</h1>
-    <div v-if="ageMoviesLength > 7">
+    <p class="d-flex justify-content-start ms-3 fs-4">또래들이 좋아하는 영화</p>
+    <div v-if="ageMoviesLength > 8">
       <vue-glide 
         class="glide__track"
         data-glide-el="track"
         ref="slider"
         type="carousel"
-        :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 5}, 1000: {perView: 3} }"
+        :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
         :gap="10">
         <vue-glide-slide v-for="movie in ageMovies" :key="movie.id">
           <movie-card :movie="movie" />
         </vue-glide-slide>
       </vue-glide>
     </div>
-    <div class="container" v-if="ageMoviesLength <= 7">
+    <div class="d-flex justify-content-start" v-if="ageMoviesLength <= 8">
       <div id="littlecount" v-for="movie in ageMovies" :key="movie.id">
-        <movie-card :movie="movie" />
+        <div class="me-4">
+          <movie-card :movie="movie" />
+        </div>
       </div>
     </div>
     </div>
 
   <div v-if="followMoviesLength">
-    <h1>FOLLOW movies</h1>
-    <div v-if="followMoviesLength > 7">
+    <p class="d-flex justify-content-start ms-3 fs-4">내 팔로우가 좋아하는 영화</p>
+    <div v-if="followMoviesLength > 8">
       <vue-glide 
         class="glide__track"
         data-glide-el="track"
         ref="slider"
         type="carousel"
-        :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 5}, 1000: {perView: 3} }"
+        :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
         :gap="10">
         <vue-glide-slide v-for="movie in followMovies" :key="movie.id">
           <movie-card :movie="movie" />
         </vue-glide-slide>
       </vue-glide>
     </div>
-    <div class="container" v-if="followMoviesLength <= 7">
+    <div class="d-flex justify-content-start" v-if="followMoviesLength <= 8">
       <div id="littlecount" v-for="movie in followMovies" :key="movie.id">
         <movie-card :movie="movie" />
       </div>
@@ -198,6 +206,7 @@ export default {
     ...mapActions([
       'fetchPopularMovies', 'fetchNowPlayingMovies','fetchLikeMovies', 'fetchLikeWatched',
       'fetchGenderMovies', 'fetchAgeMovies', 'fetchUpcomingMovies', 'fetchFollowMovies']),
+  
   },
   // likemovie, likewatchmovie, usergendermovie, useragemovie, upcoming, followmovie
   created(){

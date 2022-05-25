@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoggedIn">
+  <div v-if="!isLoggedIn" class="login-form">
     <account-error-list v-if="authError"></account-error-list>
     <b-form @submit.prevent="login(credentials)">
       <b-form-group
@@ -79,5 +79,8 @@ export default {
 form { 
   margin: 0 auto; 
   width:250px;
+}
+.login-form{
+  height:100%;
 }
 </style>

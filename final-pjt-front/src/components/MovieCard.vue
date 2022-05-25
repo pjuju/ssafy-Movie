@@ -1,7 +1,7 @@
 <template>
-  <div>       
+  <div class= "movie-poster">       
       <router-link :to=" { name: 'movie', params: { moviePk: movie.id } }">
-        <img :src="imgUrl" class="card-img-top m-1" style="height: 300px; width: 200px;" alt="img">
+        <img :src="imgUrl" class="m-1" style="height: 300px; width: 200px;" alt="img">
       </router-link>     
           <p class="fw-bold">{{movie.title}}</p>
   </div>
@@ -26,5 +26,8 @@ export default {
 </script>
 
 <style>
-
+.movie-poster:hover{
+  transform: scale(1.2);
+  transition: 300ms ease-in-out;   
+}
 </style>

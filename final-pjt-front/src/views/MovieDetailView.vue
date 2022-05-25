@@ -2,26 +2,28 @@
   <div>
     <div class="movie-detail" v-if="movie.backdrop_path">
       <div class="movie-background" :style="{ backgroundImage: `url(${moviebackimgUrl})`}" style="background-size:cover">
-        <div class="movie-content d-flex">
+        <div class="movie-content d-flex justify-content-center">
           <img class="p-4" :src="movieimgUrl" alt="">
-          <div class="movie-text ms-3">
-            <h1 class="d-flex justify-content-start pt-4">{{movie.title}}</h1>
+          <div class="movie-text ms-3" style="width:800px">
+            <div class="d-flex justify-content-between pt-4"><h1>{{movie.title}}</h1>
+              <div class="d-flex align-items-center fs-3">
+                <i v-if="isLiked" @click="clickLike" class="fa-solid fa-heart p-1" style="color:red; cursor:pointer;"></i>
+                <i v-if="!isLiked" @click="clickLike" class="fa-regular fa-heart p-1" style="color:red; cursor:pointer;"></i>
+                <i v-if="!isWatched" @click="clickWatch" class="fa-solid fa-eye p-1" style="cursor:pointer; "></i>
+                <i v-if="isWatched" @click="clickWatch" class="fa-solid fa-eye-slash p-1" style="cursor:pointer;"></i>
+              </div>
+            </div>
             <p v-show="movie.tagline" class="text-start ps-2">"{{movie.tagline}}"</p>
             <hr>
             <div class="d-flex justify-content-start ps-2">
             <span class="genres" v-for="genre in movie.genres" :key="genre.id">{{genre.name}}</span>
             </div>
-            <div class="text-start ps-2" style="width:80%">
-            <span>{{movie.release_date}} | {{movie.runtime}}분</span>           
-            <p class="pt-4">{{movie.overview}}</p>
-
-            <!-- 좋아요 watched 구현 -->
-              <i v-if="isLiked" @click="clickLike" class="fa-solid fa-heart" style="color:red; cursor:pointer;"></i>
-              <i v-if="!isLiked" @click="clickLike" class="fa-regular fa-heart" style="color:red; cursor:pointer;"></i>
-              <i v-if="!isWatched" @click="clickWatch" class="fa-solid fa-eye" style="color:black; cursor:pointer; "></i>
-              <i v-if="isWatched" @click="clickWatch" class="fa-solid fa-eye-slash" style="color:black; cursor:pointer;"></i>
-
-          </div>
+            <div class="text-start ps-2">
+              <span>{{movie.release_date}} | {{movie.runtime}}분</span>
+              <div class="fs-5">     
+                <p class="pt-4">{{movie.overview}}</p>
+              </div>
+            </div>
           </div>      
         </div>
       </div>
@@ -34,16 +36,15 @@
       <router-link :to="{name: 'review'}" class="text-decoration-none text-white">
         <h4>Review</h4>
       </router-link>
-      <p>리뷰 수: {{movie.review_count}}</p>
       <div v-if="!isLoggedIn">
-      <p> 리뷰를 보려면 로그인이 필요합니다.</p>
+      <p class="mb-0"> 리뷰를 보려면 로그인이 필요합니다.</p>
       </div>
       <div v-if="isLoggedIn">
-        <i class="fa-solid fa-pen-to-square" @click="reviewNew">리뷰쓰기</i>
-      </div>
+        <p>리뷰 수: {{movie.review_count}}</p>
+        <i class="fa-solid fa-pen-to-square pb-4" @click="reviewNew">리뷰쓰기</i>
       <br>
-    
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+      
+      <div v-if="movie.review_count" class="row row-cols-1 row-cols-md-3 g-4">
       <div v-for="review in movie.reviews" :key="review.pk"
        class="card col border-light m-3" style="max-width: 18rem;">
       <div class="card-header">
@@ -64,7 +65,7 @@
     </div>
       
     </div>
-
+    </div>
   </div>
   <!-- movie -> likeuser -> currentuser -->
 
@@ -168,7 +169,7 @@ export default {
   color: white;
 }
 .movie-content{
-  height: 100hv;
+  height: 100%;
   background-color: rgba( 40, 40, 40, 0.5 );
 }
 .genres:not(:first-of-type)::before{
@@ -177,6 +178,7 @@ export default {
 
 .fa-pen-to-square {
   cursor: pointer;
+  color: white;
 }
 .list-group {
   margin: 0 auto; 
@@ -185,14 +187,14 @@ export default {
 .card {
   color: black;
 }
-.fa-comment{
-  color: rgb(70, 70, 201)
-}
 .i-button{
   cursor:pointer;
 }
-.eye{
-  color:black;
+.fa-comment{
+  color: rgb(25, 25, 179);
+}
+.fa-eye{
+  color:white;
 }
 
 </style>

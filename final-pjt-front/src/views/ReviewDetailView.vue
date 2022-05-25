@@ -1,27 +1,34 @@
 <template>
-  <div v-if="isLoggedIn">
-    <h4>
+  <div>
+    <div v-if="!isLoggedIn">
+      <p>로그인이 필요합니다.</p>
+    </div>
+    <div v-if="isLoggedIn">
+    <p class="text-muted">
       리뷰 | 
     <router-link
      :to="{ name: 'movie', params:{ moviePk: pk.moviePk } }"
       class="text-decoration-none">
       <span v-for="movie in review" :key="movie.id">
-      <span v-if="movie.title"> {{movie.title}}</span></span>
+      <span v-if="movie.title" class="text-muted"> {{movie.title}}</span>
+      </span>
     </router-link>
-    </h4>
-    <hr>
+    </p>
     <div class="content">
-      <p>제목: {{review.title}}</p>
-      <div v-if="review.user">
-        <p><small> 작성자: {{review.user.username}}</small></p>
-        <p><small> {{review.updated_at | yyyyMMdd}}</small></p>        
-      <div>
-    </div>
-    <div class="review-content">
+        <h1>{{review.title}}</h1>
+      <span><small> 작성자: {{review.user.username}}</small></span>
+      <span><small> {{review.updated_at | yyyyMMdd}}</small></span>  
+    <hr>
+      <!-- <div class="title-box">
+      </div> -->
+
+
+    <div v-if="review.user">                
+    <div class="review-content" style="width:70%">
       <p> 내용:{{review.content}} </p>
     </div>
       <small>
-        <span> 좋아요: 3개</span>
+        <span> 좋아요: {{likeCount}}개</span>
         <span> 댓글: {{review.comments_count}}개</span>
       </small>
     </div>
@@ -53,7 +60,7 @@
     </div>
 
 
-
+  </div>
   </div>
 </template>
 
@@ -80,6 +87,9 @@ export default {
   },
   computed:{
     ...mapGetters(['review', 'isAuthor','isLoggedIn', 'currentUser']),
+    likeCount(){
+      return this.review.like_users?.length
+    }
   },
   methods:{
     ...mapActions(['fetchReview', 'deleteReview', 'likeReview']),
@@ -133,4 +143,14 @@ export default {
 .review-content{
   margin: auto;
 }
+.title-box{
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  width:70%;
+}
+/* .content{
+  display: flex;
+  justify-content: center;
+} */
 </style>
