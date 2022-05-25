@@ -1,7 +1,8 @@
 <template>
   <div>
     <h1>{{profileUser.username}}님의 프로필</h1>
-
+    <i v-if="isLiked" @click="clickFollow" class="fa-solid fa-heart" style="color:red; cursor:pointer;"></i>
+    <i v-if="!isLiked" @click="clickFollow" class="fa-regular fa-heart" style="color:red; cursor:pointer;"></i>
 
     <div v-if="profileUser.like_movies">
       <p class="d-flex justify-content-start ms-3 fs-4">{{profileUser.username}}님이 찜한 영화 : {{profileUser.like_movies.length}}개</p>
@@ -59,12 +60,6 @@
       </div>
     </div>
     
-  
-  
-  
-
-    
-
     
   </div>
 </template>
@@ -91,19 +86,38 @@ export default {
   },
   data(){
     return{
-      username:this.$route.params.username,      
+      username: this.$route.params.username,  
+      isLiked: false,    
     }
   },
 
   computed:{
-    ...mapGetters(['profileUser']),
+    ...mapGetters(['profileUser', 'currentUser']),
+    likeCount(){
+      return this.profileUser.followers?.length
+    }
   },
 
   methods:{
-    ...mapActions(['fetchProfileUser']),
+    ...mapActions(['fetchProfileUser', 'follow']),
+    onLike(){    
+      const followers = JSON.parse(JSON.stringify(this.profileUser.followers)) 
+                
+      
+      if (followers.some(user => user.id === this.currentUser.pk)){
+      this.isLiked = true
+      }
+      else {this.isLiked = false}             
+    },
+    clickFollow(){      
+      this.follow(this.username)
+    },    
   },
   created(){
     this.fetchProfileUser(this.username)
+  },
+  updated(){
+    this.onLike()
   },
 }
 </script>

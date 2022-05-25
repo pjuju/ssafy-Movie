@@ -11,7 +11,7 @@ export default {
     login: () => HOST + ACCOUNTS + 'login/',
     logout: () => HOST + ACCOUNTS + 'logout/',
     signup: () => HOST + ACCOUNTS + 'signup/',
-    follow: username => HOST + ACCOUNTS + 'follow/' + `${username}/`,
+    follow: username => HOST + ACCOUNTS + 'profile/' + `${username}/` + 'follow/',
     profile: username => HOST + ACCOUNTS + 'profile/' + `${username}/`,
     // 유저 로그인 확인
     currentUserInfo: () => HOST + ACCOUNTS + 'user/',
