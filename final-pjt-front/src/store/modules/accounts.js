@@ -7,18 +7,21 @@ export default {
     token: localStorage.getItem('token') || '',
     currentUser:{},
     authError: null,
+    profileUser:{},
   },
   getters:{
     isLoggedIn: state => !!state.token,
     authHeader: state => ({ Authorization: `Token ${state.token}`}),
     authError: state => state.authError,
     currentUser: state => state.currentUser,
-    currentUsername: state=> state.currentUser.username
+    currentUsername: state=> state.currentUser.username,
+    profileUser: state => state.profileUser
   },
   mutations:{
     SET_CURRENT_USER: (state, user) => state.currentUser = user,
     SET_TOKEN: (state, token) => state.token = token,
-    SET_AUTH_ERROR: (state, error) => state.authError = error
+    SET_AUTH_ERROR: (state, error) => state.authError = error,
+    SET_PROFILE_USER: (state, user) => state.profileUser = user,
 
   },
   actions:{
@@ -100,6 +103,21 @@ export default {
           }
         })
       }
+    },
+
+    // 프로필 유저 업데이트
+    fetchProfileUser({commit}, username){
+      axios({
+        method: 'get',
+        url: drf.accounts.profile(username),        
+      })
+      .then(res =>{
+        commit('SET_PROFILE_USER', res.data)})
+      .catch(err =>{
+        console.error(err.response)
+      })
     }
+    
   },
+  
 }
