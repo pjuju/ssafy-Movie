@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!isLoggedIn">
     <account-error-list v-if="authError"></account-error-list>
     <b-form @submit.prevent="login(credentials)">
       <b-form-group
@@ -66,7 +66,7 @@ export default {
     }
   },
   computed:{
-    ...mapGetters(['authError'])
+    ...mapGetters(['authError', 'isLoggedIn'])
   },
   methods:{
     ...mapActions(['login'])

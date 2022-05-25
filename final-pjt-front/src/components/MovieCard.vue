@@ -19,7 +19,6 @@ export default {
   data: function(){
   return {
     imgUrl:`https://image.tmdb.org/t/p/w500${this.movie.poster_path}`,
-    // id : this.movie.tmdb_id ? this.movie.tmdb_id : this.movie.id
     }
   },
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!isLoggedIn">
     <account-error-list v-if="authError"></account-error-list>
 
     <h1>회원가입</h1>
@@ -58,31 +58,6 @@
     </b-form>
 
 
-
-
-    <!-- <form @submit.prevent="signup(credentials)">
-      <div>
-        <label for="username">아이디:</label>
-        <input type="text" v-model="credentials.username" id="username" required />
-      </div>
-      <div>
-        <label for="password1">비밀번호:</label>
-        <input type="password" v-model="credentials.password1" id="password1" required />
-      </div>
-      <div>
-        <label for="password2">비밀번호 확인:</label>
-        <input type="password" v-model="credentials.password2" id="password2" required />
-      </div>
-      <div>
-        <label for="age">나이:</label>
-        <input type="text" v-model="credentials.age" id="age" required />
-      </div>
-      <div>
-        <label for="gender">성별:</label>
-        <input type="text" v-model="credentials.gender" id="gender" required />
-      </div>
-      <button>회원가입</button>
-    </form> -->
   </div>
 </template>
 
@@ -107,7 +82,7 @@ export default {
     }
   },
   computed:{
-    ...mapGetters(['authError'])
+    ...mapGetters(['authError', 'isLoggedIn'])
   },
   methods:{
     ...mapActions(['signup'])

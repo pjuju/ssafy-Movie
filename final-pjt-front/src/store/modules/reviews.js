@@ -99,20 +99,7 @@ export default {
           router.push({ name: 'login' })
         }
       })
-
     },
-    // fetchComments({commit, getters}, {moviePk, reviewPk}){
-    //   axios({
-    //     method:'get',
-    //     url: drf.movies.comments(moviePk, reviewPk),
-    //     headers: getters.authHeader,
-    //   })
-    //   .then(res => {
-    //     commit('SET_REVIEW_COMMENTS', res.data)
-    //   })
-    //   .catch(err =>
-    //     console.error(err.response))
-    // },
     createComment({getters, dispatch}, {moviePk, reviewPk, content}){
       const comment = {content}
       axios({
@@ -164,6 +151,18 @@ export default {
           dispatch('fetchReview', pk)
         })
       }
+    },
+    likeReview({getters, dispatch}, {moviePk, reviewPk}){    
+      axios({
+        method:'post',
+        url: drf.movies.reviewlike(moviePk, reviewPk),        
+        headers: getters.authHeader,
+      })
+      .then(()=>{
+        dispatch('fetchReview', {moviePk, reviewPk})
+      })
+      .catch(err =>
+        console.log(err.response))
     },
   }
 }
