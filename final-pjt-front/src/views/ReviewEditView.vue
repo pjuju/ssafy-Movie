@@ -1,0 +1,38 @@
+<template>
+  <div>
+    <review-form v-if="isReview" :review="review" action="update"></review-form>
+  </div>
+</template>
+
+<script>
+import ReviewForm from "@/components/ReviewForm.vue"
+import { mapGetters, mapActions } from 'vuex'
+export default {
+  name: 'ReviewEditView',
+  components:{
+    ReviewForm,
+  },
+  computed:{
+    ...mapGetters(['review', 'isReview'])
+  },
+  data(){
+    return{
+      pk:{
+        moviePk: this.$route.params.moviePk,
+        reviewPk: this.$route.params.reviewPk,
+
+    }
+    }
+  },
+  methods:{
+    ...mapActions(['fetchReview'])
+  },
+  created(){
+    this.fetchReview(this.pk)
+  }
+}
+</script>
+
+<style>
+
+</style>
