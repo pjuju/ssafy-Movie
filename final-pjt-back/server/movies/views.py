@@ -14,6 +14,7 @@ from collections import Counter
 import urllib.request
 from pprint import pprint
 import json
+import random
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -232,8 +233,8 @@ def user_age(request):
     username = request.user.username
     user = get_object_or_404(User, username=username)
 
-    # 같은 연령대로 -7살, +7살로 설정
-    min_age, max_age = user.age - 7, user.age + 7
+    # 같은 연령대로 -2살, +2살로 설정 (+7, -7로 변경 가능)
+    min_age, max_age = user.age - 2, user.age + 2
 
     # 같은 연령대 유저들 가져옴
     user_list = User.objects.filter(age__gte=min_age, age__lte=max_age)
@@ -249,8 +250,8 @@ def user_age(request):
             movie_list.append(watched_movie)
     
     # movie_list에 가장 많이 추가된 영화들 상위 15개 가져옴
+    
     recommend_movie_list = [i[0] for i in Counter(movie_list).most_common()][:15]
-
     serializer = MovieListSerializer(recommend_movie_list, many=True)       
     return Response(serializer.data)
 
@@ -259,14 +260,11 @@ def user_follow(request):
     username = request.user.username
     user = get_object_or_404(User, username=username)
 
-    # 같은 연령대로 -7살, +7살로 설정
-    
-
-    # 같은 연령대 유저들 가져옴
+    # 팔로잉 유저들 가져옴
     user_list = user.followings.all()
     movie_list = []
 
-    # 같은 연령대 유저들이 시청했거나 좋아요 누른 영화들을 movie_list에 담음
+    # 팔로잉 유저들이 시청했거나 좋아요 누른 영화들을 movie_list에 담음
     for user in user_list:       
         like_movies = user.like_movies.all()
         watched_movies = user.watched_movies.all()              
@@ -277,14 +275,14 @@ def user_follow(request):
     
     # movie_list에 가장 많이 추가된 영화들 상위 15개 가져옴
     recommend_movie_list = [i[0] for i in Counter(movie_list).most_common()][:15]
-
     serializer = MovieListSerializer(recommend_movie_list, many=True)       
     return Response(serializer.data)
 
 @api_view(['GET'])
 def user_gender(request):
     username = request.user.username
-    user = get_object_or_404(User, username=username)    
+    user = get_object_or_404(User, username=username) 
+
     # 성별이 같은 유저들 리스트 가져옴
     user_list = User.objects.filter(gender=user.gender)
     movie_list = []
@@ -326,7 +324,7 @@ def like_watch(request):
     common_genres = [i[0] for i in Counter(genre_list).most_common()][:3]
     
     # 영화데이터에서 장르가 내가 좋아하는 common_geres에 있는 영화들을 populariry로 정렬하여 맨앞 15개 가져옴 
-    movie_list = Movie.objects.filter(genres__in=common_genres, vote_count__gte=5000).distinct().order_by('-vote_average')[:15]  
+    movie_list = Movie.objects.filter(genres__in=common_genres, vote_count__gte=5000).distinct().order_by('-vote_count')[:15]  
     serializer = MovieListSerializer(movie_list, many=True)       
     return Response(serializer.data)
 
