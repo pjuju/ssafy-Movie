@@ -1,7 +1,7 @@
 <template>
   <div class= "movie-poster">       
       <router-link :to=" { name: 'movie', params: { moviePk: movie.id } }">
-        <img :src="imgUrl" class="m-1" style="height: 300px; width: 200px;" alt="img">
+        <img :src="imgUrl" class="m-1 rounded-3 shadow-sm" style="height: 300px; width: 200px; " alt="img">
       </router-link>     
           <p class="fw-bold">{{movie.title}}</p>
   </div>

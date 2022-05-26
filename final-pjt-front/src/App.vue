@@ -38,12 +38,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
-  background-color: rgb(1, 9, 20);
+  background-color: rgb(2, 3, 16);
   height: 100hv;
 }
 
 html { 
-  background-color:black
+  background-color:rgb(2, 3, 16);
 }
 
 .padding {

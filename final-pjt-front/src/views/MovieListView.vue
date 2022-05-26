@@ -1,6 +1,7 @@
 <template>
   <div class="movie-list">
 <div v-if="isLoggedIn">
+  <br>
     <div v-if="likeMoviesLength">
     <p class="d-flex justify-content-start ms-3 fs-4">내가 찜한 영화</p>
     <div v-if="likeMoviesLength > 8">
@@ -26,6 +27,7 @@
     </div>
 
     <div v-if="likeWatchedLength">
+      <br>
     <p class="d-flex justify-content-start ms-3 fs-4">내가 좋아할 만한 장르의 영화</p>
     <div v-if="likeWatchedLength > 8">
       <vue-glide 
@@ -50,6 +52,7 @@
     </div>
 
     <div v-if="genderMoviesLength">
+    <br>
     <p class="d-flex justify-content-start ms-3 fs-4">내 성별이 많이 보고 좋아한 영화</p>
     <div v-if="genderMoviesLength > 8">
       <vue-glide 
@@ -74,6 +77,7 @@
     </div>
 
   <div v-if="ageMoviesLength">
+    <br>
     <p class="d-flex justify-content-start ms-3 fs-4">또래들이 많이 보고 좋아한 영화</p>
     <div v-if="ageMoviesLength > 8">
       <vue-glide 
@@ -99,6 +103,7 @@
     </div>
 
   <div v-if="followMoviesLength">
+    <br>
     <p class="d-flex justify-content-start ms-3 fs-4">내 팔로우가 많이 보고 좋아한 영화</p>
     <div v-if="followMoviesLength > 8">
       <vue-glide 
@@ -120,6 +125,7 @@
     </div>
     </div>
     
+    <br>
     <p class="d-flex justify-content-start ms-3 fs-4">지금 인기있는 영화</p>
     <vue-glide v-if="popular.length"
       class="glide__track"
@@ -133,6 +139,7 @@
       </vue-glide-slide>
     </vue-glide>
 
+    <br>
     <p class="d-flex justify-content-start ms-3 fs-4">출시 예정 영화</p>
     <vue-glide v-if="upComing.length"
       class="glide__track"
@@ -146,6 +153,7 @@
       </vue-glide-slide>
     </vue-glide>
 
+    <br>
     <p class="d-flex justify-content-start ms-3 fs-4">현재 상영 중인 영화</p>
     <vue-glide v-if="nowPlaying.length > 8"
       class="glide__track"
