@@ -12,9 +12,16 @@ class FakeUserSerializer(serializers.ModelSerializer):
             fields = '__all__'
 
     class ReviewListSerializer(serializers.ModelSerializer):
+        class MovieListSerializer(serializers.ModelSerializer):
+            class Meta:
+                model = Movie
+                fields = '__all__'
+                
+        movie = MovieListSerializer(many=True, read_only = True)
         class Meta:
             model = Review
             fields = '__all__'
+
     
     class CommentListSerializer(serializers.ModelSerializer):
         class Meta:

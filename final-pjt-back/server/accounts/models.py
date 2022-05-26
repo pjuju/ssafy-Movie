@@ -11,6 +11,6 @@ class User(AbstractUser):
     }
 
     followings = models.ManyToManyField('self', symmetrical=False, related_name='followers')
-    age = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+    age = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)], default="20")
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=False, default="male")
     # 1, 2 로 변환?
