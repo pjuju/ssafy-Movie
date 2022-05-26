@@ -329,3 +329,12 @@ def like_watch(request):
     movie_list = Movie.objects.filter(genres__in=common_genres, vote_count__gte=5000).distinct().order_by('-vote_average')[:15]  
     serializer = MovieListSerializer(movie_list, many=True)       
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def search_list(request, title):
+    print(title)
+    movies = Movie.objects.filter(title__contains=title) | Movie.objects.filter(original_title__contains=title)
+    movies = movies.distinct().order_by('-popularity')
+    serializer = MovieListSerializer(movies, many=True)       
+    return Response(serializer.data)

@@ -44,8 +44,9 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
     movie = MovieSerializer(read_only=True)
-    user = UserSerializer(read_only=True)
+    user = UserSerializer(read_only=True)    
     like_users = UserSerializer(many=True, read_only=True)
+    like_users_count = serializers.IntegerField(source='like_users.count', read_only=True)
     comments = CommentListSerializer(many=True, read_only=True)
     comments_count = serializers.IntegerField(source='comments.count', read_only=True)
 

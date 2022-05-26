@@ -6,6 +6,7 @@ app_name = 'movies'
 urlpatterns = [
     # movies
     path('', views.movie_list), # 전체 영화리스트 O
+    path('serach_list/<title>/', views.search_list), # 영화 검색 리스트  
     path('like_list/', views.like_list), # 좋아요 누른 영화리스트    
     path('now_playing/', views.now_playing), # 전체 현재 상영작
     path('upcoming/', views.upcoming), # 상영예정작
