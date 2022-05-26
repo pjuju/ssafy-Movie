@@ -24,6 +24,12 @@
                 <p class="pt-4">{{movie.overview}}</p>
               </div>
             </div>
+            <div class="d-flex justify-content-center align-items-center mt-4" v-if="videoUrl">
+              <div class="ratio ratio-16x9 ms-2" style="width:80%; height:80%;">
+                <iframe :src="videoUrl" title="YouTubevideo" allowfullscreen></iframe>
+              </div>
+            </div>
+            
           </div>      
         </div>
       </div>
@@ -43,22 +49,80 @@
         <p>리뷰 수: {{movie.review_count}}</p>
         <i class="fa-solid fa-pen-to-square pb-4" @click="reviewNew">리뷰쓰기</i>
       <br>
-      
-      <div v-if="movie.review_count" class="row row-cols-1 row-cols-md-3 g-4">
-      <div v-for="review in movie.reviews" :key="review.pk"
-       class="card col border-light m-3" style="max-width: 18rem;">
-      <div class="card-header">
-        <i style="color:red;" class="fa-solid fa-star"></i>
-          {{review.rank}}
-          <small class="text-muted">{{review.user.username}}</small>
-      </div>
+      <div v-if="movie.review_count > 5">
+        <vue-glide 
+          class="glide__track"
+          data-glide-el="track"
+          ref="slider"
+          type="slider"
+          :breakpoints="{ 3000: {perView: 5}, 1500: {perView: 3}, 1000: {perView: 2} }"
+          :bound="true"
+          :gap="10">
+          <vue-glide-slide v-for="review in manyLikeReviews" :key="review.pk">
+            <div class="card mb-0 col border-light mx-3" style="max-width: 18rem;">
+              <div class="card-header d-flex justify-content-between align-items-center"
+              style="background-color: rgba( 211, 211, 211)">
+                  <div>
+                    <i class="fa-solid fa-user me-1"></i>
+                    <span class="text-black">{{review.user.username}}</span>
+                  </div>
+                  <div class="rank-border">
+                    <i style="color:orange;" class="fa-solid fa-star"></i>
+                    {{review.rank}}
+                  </div>
+                </div>
+                    <router-link :to="{name: 'reviewDetail', params: {moviePk: movie.id, reviewPk: review.id} }" 
+                      class="text-decoration-none text-black"
+                      style="background-color: rgba( 211, 211, 211)">
+                    <div class="card-body text-start pb-0">
+                      <h5 class="card-title">{{review.title | cutTitle}}</h5>
+                        <p class="card-text">{{review.content | cutLength}}</p>
+                        <hr>
+                        <div>
+                          <div class="d-flex align-items-center heart-comment">
+                            <small>
+                            <i class="fa-solid fa-comment" style="color:blue;"></i> {{review.comments_count}}
+                            <i class="fa-solid fa-heart" style="color:red;"></i> {{review.like_users.length}}
+                            </small>
+                          </div>
+                          <p><small class="text-muted">{{review.created_at | cutDate}}</small></p>
+                        </div>
+                    </div>
+                    </router-link>            
+            </div>
+          </vue-glide-slide>
+        </vue-glide>
+      </div>    <div v-if="movie.review_count <= 5" class="row">
+      <div v-for="review in manyLikeReviews" :key="review.pk"
+       class="card p-0 mb-0 col border-light mx-3" style="max-width: 18rem;">
+        <div class="card-header d-flex justify-content-between align-items-center"
+        style="background-color: rgba( 211, 211, 211)">
+          <div>
+            <i class="fa-solid fa-user me-1"></i>
+            <span class="text-black me-1">{{review.user.username}}</span>
+            <small><i class="fa-solid fa-circle-check" style="color: red;"></i></small>
+          </div>
+          <div class="rank-border">
+            <i style="color:orange;" class="fa-solid fa-star"></i>
+            {{review.rank}}
+          </div>
+        </div>
       <router-link :to="{name: 'reviewDetail', params: {moviePk: movie.id, reviewPk: review.id} }" 
-        class="text-decoration-none text-black">
-      <div class="card-body">
-      <h5 class="card-title">{{review.title}}</h5>
-        <p class="card-text">{{review.content | cutLength}}</p>
-        <div><i class="fa-solid fa-comment"></i> {{review.comments_count}} </div>
-        <p><small class="text-muted">{{review.created_at | yyyyMMdd}}</small></p>
+        class="text-decoration-none text-black"
+        style="background-color: rgba( 211, 211, 211)">
+      <div class="card-body text-start pb-0">
+        <h5 class="card-title">{{review.title | cutTitle}}</h5>
+          <p class="card-text">{{review.content | cutLength}}</p>
+          <hr>
+          <div>
+            <div class="d-flex align-items-center heart-comment">
+              <small>
+              <i class="fa-solid fa-comment" ></i> {{review.comments_count}}
+              <i class="fa-solid fa-heart"></i> {{review.like_users.length}}
+              </small>
+            </div>
+            <p><small class="text-muted">{{review.created_at | cutDate}}</small></p>
+          </div>
       </div>
       </router-link>
       </div>
@@ -67,8 +131,6 @@
     </div>
     </div>
   </div>
-  <!-- movie -> likeuser -> currentuser -->
-
   
 </template>
 
@@ -77,7 +139,7 @@
 // 리뷰가져와서 타이틀만 뽑아서 나열해야함
 
 import { mapActions, mapGetters } from 'vuex'
-
+import _ from 'lodash'
 export default {
   name:'MovieDetailView',
   data(){
@@ -89,11 +151,14 @@ export default {
   },
   computed:{
     ...mapGetters(['movie', 'movieimgUrl', 'moviebackimgUrl',
-     'isLoggedIn','currentUser']),
+     'isLoggedIn','currentUser', 'videoUrl']),
+    manyLikeReviews(){
+      return _.sortBy(this.movie.reviews, 'like_users_count').reverse()
+    }
 
   },
   methods:{
-    ...mapActions(['fetchMovie', 'likeMovie', 'watchMovie']),
+    ...mapActions(['fetchMovie', 'likeMovie', 'watchMovie', 'fetchVideo']),
     reviewNew(){
       this.$router.push({name: 'reviewNew', params: {moviePk: this.movie.id}})
     },
@@ -126,34 +191,29 @@ export default {
   },
   created(){
     this.fetchMovie(this.moviePk)
+    this.fetchVideo(this.moviePk)
   },
   updated(){
     this.onLike()
     this.onWatch()
   },
   filters : {  
-    yyyyMMdd(value){ 
-            if(value == '') return '';
-            
-            var js_date = new Date(value);
-            // 연도, 월, 일 추출
-            var year = js_date.getFullYear();
-            var month = js_date.getMonth() + 1;
-            var day = js_date.getDate();
-
-            if(month < 10){
-              month = '0' + month;
-            }
-
-            if(day < 10){
-              day = '0' + day;
-            }
-
-            return year + '-' + month + '-' + day;
+    cutDate(value){
+      const ymd = value.slice(0,10)
+      const hm = value.slice(11,16)
+      return ymd + ' ' + hm
     },
     cutLength(value){
-      if(value.length > 30){
-        return value.slice(0, 30) + '...'
+      if(value.length > 50){
+        return value.slice(0, 38) + '...'
+      }
+      else{
+        return value
+      }
+    },
+    cutTitle(value){
+      if(value.length > 13){
+        return value.slice(0, 8) + '...'
       }
       else{
         return value
@@ -176,6 +236,9 @@ export default {
   content: "/";
 }
 
+.card-text{
+  height: 48px;
+}
 .fa-pen-to-square {
   cursor: pointer;
   color: white;
@@ -190,11 +253,13 @@ export default {
 .i-button{
   cursor:pointer;
 }
-.fa-comment{
-  color: rgb(25, 25, 179);
+.heart-comment{
+  color: rgb(40, 40, 40);
 }
 .fa-eye{
   color:white;
 }
+
+
 
 </style>

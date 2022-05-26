@@ -2,14 +2,14 @@ import drf from '@/api/drf'
 // import router from '@/router'
 import axios from 'axios'
 
-// const API_URL = 'https://api.themoviedb.org/3/movie/'
-// const API_KEY = 'e97617d64b251b650b844ce38f163eaa'
-// const params ={
-//   api_key: API_KEY,
-//   language : 'ko',
-//   region : 'KR',
+const API_URL = 'https://api.themoviedb.org/3/movie/'
+const API_KEY = 'e97617d64b251b650b844ce38f163eaa'
+const params ={
+  api_key: API_KEY,
+  language : 'ko',
+  region : 'KR',
 
-// }
+}
 
 export default {
   state:{
@@ -40,7 +40,7 @@ export default {
     movieimgUrl: state => state.movieimgUrl,
     moviebackimgUrl: state => state.moviebackimgUrl,
     searchMovieList: state => state.searchMovieList,
-
+    videoUrl: state => state.videoUrl,
   },
   mutations:{
     FETCH_POPULAR(state, movies){
@@ -74,6 +74,9 @@ export default {
     },
     SET_SEARCH_MOVIES(state,movies){
       state.searchMovieList = movies
+    },
+    FETCH_VIDEO(state, url){
+      state.videoUrl = url
     }
 
   },
@@ -229,6 +232,20 @@ export default {
         console.log(err.response)
       })
     },
+    fetchVideo({commit}, moviePk){
+      axios({
+        method: 'get',
+        url: API_URL + `${moviePk}/videos`,
+        params
+      })
+      .then(res=>{
+        console.log(res.data)
+        const videoKey = res.data.results[0].key
+        const youtubeUrl = `https://www.youtube.com/embed/${videoKey}?rel=0`
+        commit('FETCH_VIDEO', youtubeUrl)
+      })
+      .catch(err=> console.log(err.response))
+    }
 
 
   },

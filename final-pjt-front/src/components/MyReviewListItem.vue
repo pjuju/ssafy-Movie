@@ -1,5 +1,5 @@
 <template>
-  <div class="col">
+  <div v-if="review.user.username === currentUsername" class="col">
     <div class="card">
       <router-link class="text-decoration-none"
         :to="{ name: 'movie', params: {moviePk: review.movie.id} }">
@@ -28,12 +28,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name:'ReviewListItem',
   props:{
     review:Object,
   },
   computed:{
+    ...mapGetters(['currentUsername']),
     poster(){
       return 'https://image.tmdb.org/t/p/w500' + this.review.movie.poster_path
     },

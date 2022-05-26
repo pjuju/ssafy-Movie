@@ -25,7 +25,7 @@
 
     <div v-if="profileUser.like_movies">
       <p class="d-flex justify-content-start ms-3 fs-4">{{profileUser.username}}님이 찜한 영화 : {{profileUser.like_movies.length}}개</p>
-      <div v-if="profileUser.like_movies.length > 8">
+      <div v-if="profileUser.like_movies.length >= 8">
         <vue-glide 
           class="glide__track"
           data-glide-el="track"
@@ -38,7 +38,7 @@
           </vue-glide-slide>
         </vue-glide>
       </div>
-      <div class="d-flex justify-content-start" v-if="profileUser.like_movies.length <= 8">
+      <div class="d-flex justify-content-start" v-if="profileUser.like_movies.length < 8">
         <div id="littlecount" v-for="movie in profileUser.like_movies" :key="movie.id">
           <div class="me-4">
             <movie-card :movie="movie" />
@@ -140,9 +140,6 @@ export default {
   
   
 
-  beforeUpdate(){
-    this.fetchProfileUser(this.getUsername)
-  },
 
   updated(){
     this.onLike()

@@ -32,10 +32,9 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@500&display=swap');
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
   background-color: rgb(2, 3, 16);
@@ -43,11 +42,12 @@ export default {
 }
 
 html { 
-  background-color:rgb(2, 3, 16);
+  background-color: rgb(2, 3, 16);
 }
 
 .padding {
   padding: 0vw 10vw;
+  font-family: 'Hahmlet', serif;
   
 }
 
