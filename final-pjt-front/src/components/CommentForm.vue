@@ -1,10 +1,19 @@
 <template>
   <div>
-    <form @submit.prevent="onSubmit">
-      <label for="comment">댓글쓰기:</label>
-      <input type="text" id="comment" v-model="content" required>
-      <button>등록</button>
-    </form>
+    <hr>
+    <p class="text-start">댓글쓰기</p>
+    <b-form @submit.prevent="onSubmit" class="d-flex justify-content-between pb-4" style="width:100%">
+      <b-form-group
+      label-for="input-1"
+      style="width:93%"
+      >
+        <b-form-input id="input-1" v-model="content" required>
+        </b-form-input>
+      </b-form-group>
+      <b-button type="submit" variant="primary">등록</b-button>
+    </b-form>
+      
+
   </div>
 
 </template>

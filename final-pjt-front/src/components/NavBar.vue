@@ -20,14 +20,15 @@
 
 
         <!-- Navbar dropdowns -->
-        <div v-if="isLoggedIn">
+      <div v-if="isLoggedIn && currentUser.username">
         <b-nav-item-dropdown :text="currentUser.username" right>
-          <b-dropdown-item>
-            <router-link :to=" { name: 'profile', params: { username: currentUser.username } }" class="text-decoration-none text-black">내 정보</router-link>
+          <b-dropdown-item>  
+            <router-link :to=" { name: 'profile', params: { username: currentUser.username } }"  class="text-decoration-none text-black" >
+              <p class="mb-0">내 정보</p></router-link>
           </b-dropdown-item>
           <b-dropdown-item @click="logout" class="text-black">로그아웃</b-dropdown-item>
         </b-nav-item-dropdown>
-        </div>
+      </div>
       </b-navbar-nav>
     </b-navbar>
   </div>
@@ -40,6 +41,9 @@ export default {
   name:'NavBar',
   methods:{
     ...mapActions(['logout']),
+    test(){
+      console.log('되나요?')
+    }
   },
   computed:{
     ...mapGetters(['isLoggedIn', 'currentUser']),

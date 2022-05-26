@@ -1,49 +1,6 @@
 <template>
   <div class="movie-list">
-    <p class="d-flex justify-content-start ms-3 fs-4">지금 인기있는 영화</p>
-    <vue-glide v-if="popular.length"
-      class="glide__track"
-      data-glide-el="track"
-      ref="slider"
-      type="carousel"
-      :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
-      :gap="10">
-      <vue-glide-slide v-for="movie in popular" :key="movie.id">
-        <movie-card :movie="movie" />
-      </vue-glide-slide>
-    </vue-glide>
-
-    <p class="d-flex justify-content-start ms-3 fs-4">출시 예정 영화</p>
-    <vue-glide v-if="upComing.length"
-      class="glide__track"
-      data-glide-el="track"
-      ref="slider"
-      type="carousel"
-      :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
-      :gap="10">
-      <vue-glide-slide v-for="movie in upComing" :key="movie.id">
-        <movie-card :movie="movie" />
-      </vue-glide-slide>
-    </vue-glide>
-
-    <p class="d-flex justify-content-start ms-3 fs-4">현재 상영 중인 영화</p>
-    <vue-glide v-if="nowPlaying.length > 8"
-      class="glide__track"
-      data-glide-el="track"
-      ref="slider"
-      type="carousel"
-      :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
-      :gap="10">
-      <vue-glide-slide v-for="movie in nowPlaying" :key="movie.id">
-        <movie-card :movie="movie" />
-      </vue-glide-slide>
-    </vue-glide>
-    <div v-if="nowPlaying.length <= 8">
-      <div v-for="movie in nowPlaying" :key="movie.id">
-        <movie-card :movie="movie" />
-      </div>
-    </div>
-
+<div v-if="isLoggedIn">
     <div v-if="likeMoviesLength">
     <p class="d-flex justify-content-start ms-3 fs-4">내가 찜한 영화</p>
     <div v-if="likeMoviesLength > 8">
@@ -52,7 +9,7 @@
         data-glide-el="track"
         ref="slider"
         type="carousel"
-        :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
+        :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 4}, 1000: {perView: 2} }"
         :gap="10">
         <vue-glide-slide v-for="movie in likeMovies" :key="movie.id">
           <movie-card :movie="movie" />
@@ -76,7 +33,7 @@
         data-glide-el="track"
         ref="slider"
         type="carousel"
-        :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
+        :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 4}, 1000: {perView: 2} }"
         :gap="10">
         <vue-glide-slide v-for="movie in likeWatched" :key="movie.id">
             <movie-card :movie="movie" />
@@ -100,7 +57,7 @@
         data-glide-el="track"
         ref="slider"
         type="carousel"
-        :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
+        :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 4}, 1000: {perView: 2} }"
         :gap="10">
         <vue-glide-slide v-for="movie in genderMovies" :key="movie.id">
           <movie-card :movie="movie" />
@@ -124,7 +81,7 @@
         data-glide-el="track"
         ref="slider"
         type="carousel"
-        :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
+        :breakpoints="{ 3500: {perView: 7}, 1500: {perView: 4}, 1000: {perView: 2} }"
         :gap="10">
         <vue-glide-slide v-for="movie in ageMovies" :key="movie.id">
           <movie-card :movie="movie" />
@@ -139,6 +96,7 @@
       </div>
     </div>
     </div>
+    </div>
 
   <div v-if="followMoviesLength">
     <p class="d-flex justify-content-start ms-3 fs-4">내 팔로우가 좋아하는 영화</p>
@@ -148,7 +106,7 @@
         data-glide-el="track"
         ref="slider"
         type="carousel"
-        :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
+        :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 4}, 1000: {perView: 2} }"
         :gap="10">
         <vue-glide-slide v-for="movie in followMovies" :key="movie.id">
           <movie-card :movie="movie" />
@@ -161,6 +119,51 @@
       </div>
     </div>
     </div>
+    
+    <p class="d-flex justify-content-start ms-3 fs-4">지금 인기있는 영화</p>
+    <vue-glide v-if="popular.length"
+      class="glide__track"
+      data-glide-el="track"
+      ref="slider"
+      type="carousel"
+      :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 4}, 800: {perView: 2} }"
+      :gap="10">
+      <vue-glide-slide v-for="movie in popular" :key="movie.id">
+        <movie-card :movie="movie" />
+      </vue-glide-slide>
+    </vue-glide>
+
+    <p class="d-flex justify-content-start ms-3 fs-4">출시 예정 영화</p>
+    <vue-glide v-if="upComing.length"
+      class="glide__track"
+      data-glide-el="track"
+      ref="slider"
+      type="carousel"
+      :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 4}, 1000: {perView: 2} }"
+      :gap="10">
+      <vue-glide-slide v-for="movie in upComing" :key="movie.id">
+        <movie-card :movie="movie" />
+      </vue-glide-slide>
+    </vue-glide>
+
+    <p class="d-flex justify-content-start ms-3 fs-4">현재 상영 중인 영화</p>
+    <vue-glide v-if="nowPlaying.length > 8"
+      class="glide__track"
+      data-glide-el="track"
+      ref="slider"
+      type="carousel"
+      :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 4}, 1000: {perView: 2} }"
+      :gap="10">
+      <vue-glide-slide v-for="movie in nowPlaying" :key="movie.id">
+        <movie-card :movie="movie" />
+      </vue-glide-slide>
+    </vue-glide>
+    <div v-if="nowPlaying.length <= 8">
+      <div v-for="movie in nowPlaying" :key="movie.id">
+        <movie-card :movie="movie" />
+      </div>
+    </div>
+    
 
 
   </div>
@@ -183,7 +186,7 @@ export default {
   },
   computed:{
     ...mapGetters(['popular', 'nowPlaying', 'upComing', 'likeMovies', 'likeWatched',
-    'genderMovies', 'ageMovies', 'followMovies' ]),
+    'genderMovies', 'ageMovies', 'followMovies', 'isLoggedIn' ]),
     likeMoviesLength() {
       return this.likeMovies?.length
     },

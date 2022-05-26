@@ -1,11 +1,15 @@
 <template>
-  <div>
+  <div class="review-box">
     <div v-if="!isLoggedIn">
-      <p>로그인이 필요합니다.</p>
+      <p>
+        <router-link :to="{name:'login'}">로그인</router-link>이 필요합니다.
+      </p>
     </div>
     <div v-if="isLoggedIn">
-    <p class="text-muted">
-      리뷰 | 
+    <p class="text-start text-muted">
+      <router-link :to="{name:'review'}" class="text-decoration-none text-muted">
+      리뷰
+      </router-link> | 
     <router-link
      :to="{ name: 'movie', params:{ moviePk: pk.moviePk } }"
       class="text-decoration-none">
@@ -14,52 +18,44 @@
       </span>
     </router-link>
     </p>
-    <div class="content">
-        <h1>{{review.title}}</h1>
-        <span> 작성자: </span>
-        <router-link
-        :to="{ name: 'profile', params:{ username: review.user.username } }"
-          class="text-decoration-none">
-      {{review.user.username}}
-         </router-link>
-      <span><small> {{review.updated_at | yyyyMMdd}}</small></span>  
     <hr>
-      <!-- <div class="title-box">
-      </div> -->
-
-
-    <div v-if="review.user">                
-    <div class="review-content" style="width:70%">
-      <p> 내용:{{review.content}} </p>
+    <div class="content-title text-start">
+      <h1>{{review.title}}</h1>
+      <div class="d-flex justify-content-between">
+        <span><small> 작성자: {{review.user.username}}</small></span>
+        <span><small> {{review.updated_at | yyyyMMdd}}</small></span>  
+      </div>
+    <div v-if="isAuthor" class="d-flex justify-content-end align-items-center"> 
+      <router-link :to="{name: 'reviewEdit', params: {moviePk: pk.moviePk, reviewPk: pk.reviewPk} }">
+        <i class="fa-solid fa-pen-to-square me-1"></i>
+      </router-link>      
+      <i class="fa-solid fa-trash-can" @click="deleteReview(pk)"></i>
+    </div>      
     </div>
-      <small>
-        <span> 좋아요: {{likeCount}}개</span>
-        <span> 댓글: {{review.comments_count}}개</span>
-      </small>
+    <hr>
+
+    <div class="content-content pb-4" v-if="review.user">
+      <div class="text-start mb-2">
+      <span><i style="color:yellow;" class="fa-solid fa-star"></i>
+      <span>{{review.rank}}</span></span>
+      </div>
+      <h5 class="text-start">{{review.content}} </h5>
     </div>
-  </div>    
+    <h5>
     <i v-if="isLiked" @click="clickLike" class="fa-solid fa-heart" style="color:red; cursor:pointer;"></i>
-    <i v-if="!isLiked" @click="clickLike" class="fa-regular fa-heart" style="color:red; cursor:pointer;"></i>
-    
-
-
-    <div v-if="isAuthor">
-      <button>
-        <router-link :to="{name: 'reviewEdit', params: {moviePk: pk.moviePk, reviewPk: pk.reviewPk} }">
-          EDIT
-        </router-link>
-      </button>
-      <button @click="deleteReview(pk)">
-        DELETE
-      </button>
-    </div>
+    <i v-if="!isLiked" @click="clickLike" class="fa-regular fa-heart" style="color:white; cursor:pointer;"></i>
+    </h5>
+    <small>
+      <p> 좋아요: {{likeCount}}개</p>
+    </small>
     <hr>
-    <h3>COMMENT</h3>
+    <div class="comment-box">
+    <p class="text-start"><small>댓글: {{review.comments_count}}개</small>
+    </p>
+    </div>
     
     <comment-list :comments="review.comments"></comment-list>
-    <!-- <div v-for="comment in review.comments" :key="comment.id">
-      {{comment.content}}
-    </div> -->
+
     <div>
       <comment-form></comment-form>
     </div>
@@ -145,17 +141,15 @@ export default {
 </script>
 
 <style>
-.review-content{
-  margin: auto;
+.review-box {
+  padding: 0vw 10vw;  
 }
-.title-box{
-  display: flex;
-  justify-content: space-between;
-  margin: auto;
-  width:70%;
-}
-/* .content{
-  display: flex;
-  justify-content: center;
+/* .comment-box {
+  border: 1px solid;
+  border-radius: 30px;
 } */
+.rank-box{
+  border: 1px solid;
+  border-radius: 10px;
+}
 </style>
