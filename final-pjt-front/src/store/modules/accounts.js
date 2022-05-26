@@ -116,7 +116,19 @@ export default {
       .catch(err =>{
         console.error(err.response)
       })
-    }
+    },
+    follow({getters, dispatch}, username){      
+      axios({
+        method:'post',
+        url: drf.accounts.follow(username),        
+        headers: getters.authHeader,
+      })
+      .then(()=>{
+        dispatch('fetchProfileUser', username)
+      })
+      .catch(err =>
+        console.log(err.response))
+    },
     
   },
   

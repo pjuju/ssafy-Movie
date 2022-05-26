@@ -16,7 +16,12 @@
     </p>
     <div class="content">
         <h1>{{review.title}}</h1>
-      <span><small> 작성자: {{review.user.username}}</small></span>
+        <span> 작성자: </span>
+        <router-link
+        :to="{ name: 'profile', params:{ username: review.user.username } }"
+          class="text-decoration-none">
+      {{review.user.username}}
+         </router-link>
       <span><small> {{review.updated_at | yyyyMMdd}}</small></span>  
     <hr>
       <!-- <div class="title-box">
@@ -32,10 +37,10 @@
         <span> 댓글: {{review.comments_count}}개</span>
       </small>
     </div>
-  </div>
+  </div>    
     <i v-if="isLiked" @click="clickLike" class="fa-solid fa-heart" style="color:red; cursor:pointer;"></i>
     <i v-if="!isLiked" @click="clickLike" class="fa-regular fa-heart" style="color:red; cursor:pointer;"></i>
-
+    
 
 
     <div v-if="isAuthor">
