@@ -1,6 +1,25 @@
 <template>
   <div>
     <h1>{{profileUser.username}}님의 프로필</h1>
+    <div> 
+      팔로우: {{profileUser.followings.length}}
+      팔로워: {{profileUser.followers.length}}
+    </div>
+    <div>팔로우 목록 
+      <div v-for="following in profileUser.followings" :key="following.username">
+        <router-link :to=" { name: 'profile', params: { username: following.username } }"  class="text-decoration-none text-black" >
+          <p class="mb-0 text-white">{{following.username}}</p>
+        </router-link>
+      </div>
+    </div>
+    <div>팔로워 목록
+      <div v-for="follower in profileUser.followers" :key="follower.username">
+        <router-link :to=" { name: 'profile', params: { username: follower.username } }"  class="text-decoration-none text-black" >
+          <p class="mb-0 text-white">{{follower.username}}</p>
+        </router-link>
+     </div>
+    </div>
+   
     <i v-if="isLiked" @click="clickFollow" class="fa-solid fa-heart" style="color:red; cursor:pointer;"></i>
     <i v-if="!isLiked" @click="clickFollow" class="fa-regular fa-heart" style="color:red; cursor:pointer;"></i>
 
@@ -85,8 +104,7 @@ export default {
     [GlideSlide.name]: GlideSlide,
   },
   data(){
-    return{
-      username: this.$route.params.username,  
+    return{       
       isLiked: false,    
     }
   },
@@ -94,7 +112,10 @@ export default {
   computed:{
     ...mapGetters(['profileUser', 'currentUser']),
     likeCount(){
-      return this.profileUser.followers?.length
+      return this.profileUser.followers?.length      
+    },
+    getUsername(){
+      return this.$route.params.username
     }
   },
 
@@ -114,10 +135,18 @@ export default {
     },    
   },
   created(){
-    this.fetchProfileUser(this.username)
+    this.fetchProfileUser(this.getUsername)
   },
+  
+  
+
+  beforeUpdate(){
+    this.fetchProfileUser(this.getUsername)
+  },
+
   updated(){
     this.onLike()
+    // this.fetchProfileUser(this.getUsername)
   },
 }
 </script>

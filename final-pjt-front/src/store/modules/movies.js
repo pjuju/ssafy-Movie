@@ -72,7 +72,7 @@ export default {
     FETCH_FOLLOW_MOVIES(state, movies){
       state.followMovies = movies
     },
-    FETCH_SEARCH_MOVIES(state,movies){
+    SET_SEARCH_MOVIES(state,movies){
       state.searchMovieList = movies
     }
 

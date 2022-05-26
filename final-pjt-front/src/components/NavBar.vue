@@ -52,10 +52,12 @@ export default {
       }
     },  
   methods:{
-    ...mapActions(['logout']),
+    ...mapActions(['logout', 'fetchSearchList']),
     search(){   
-      this.$router.push({name:'movieSearchList', params:{title:this.title}})   
+      this.$router.push({name:'movieSearchList', params:{title:this.title}})  
+      this.fetchSearchList(this.title) 
       this.title = ''
+      
     }
   },
   computed:{
