@@ -26,7 +26,7 @@
     </div>
 
     <div v-if="likeWatchedLength">
-    <p class="d-flex justify-content-start ms-3 fs-4">내가 좋아할 만한 영화</p>
+    <p class="d-flex justify-content-start ms-3 fs-4">내가 좋아할 만한 장르의 영화</p>
     <div v-if="likeWatchedLength > 8">
       <vue-glide 
         class="glide__track"
@@ -50,7 +50,7 @@
     </div>
 
     <div v-if="genderMoviesLength">
-    <p class="d-flex justify-content-start ms-3 fs-4">내 성별이 많이 좋아한 영화</p>
+    <p class="d-flex justify-content-start ms-3 fs-4">내 성별이 많이 보고 좋아한 영화</p>
     <div v-if="genderMoviesLength > 8">
       <vue-glide 
         class="glide__track"
@@ -74,7 +74,7 @@
     </div>
 
   <div v-if="ageMoviesLength">
-    <p class="d-flex justify-content-start ms-3 fs-4">또래들이 많이 좋아한 영화</p>
+    <p class="d-flex justify-content-start ms-3 fs-4">또래들이 많이 보고 좋아한 영화</p>
     <div v-if="ageMoviesLength > 8">
       <vue-glide 
         class="glide__track"
@@ -99,7 +99,7 @@
     </div>
 
   <div v-if="followMoviesLength">
-    <p class="d-flex justify-content-start ms-3 fs-4">내 팔로우가 좋아하는 영화</p>
+    <p class="d-flex justify-content-start ms-3 fs-4">내 팔로우가 많이 보고 좋아한 영화</p>
     <div v-if="followMoviesLength > 8">
       <vue-glide 
         class="glide__track"
