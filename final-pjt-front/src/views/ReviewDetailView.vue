@@ -98,7 +98,7 @@ export default {
       const currentUser = JSON.parse(JSON.stringify(this.currentUser)) 
       const like_users = JSON.parse(JSON.stringify(this.review.like_users))           
       
-      if (like_users.some(user => user.id === currentUser.pk)){
+      if (like_users.some(user => user.pk === currentUser.pk)){
       this.isLiked = true
       }
       else {this.isLiked = false}             
