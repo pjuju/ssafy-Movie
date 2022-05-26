@@ -249,8 +249,7 @@ def user_age(request):
         for watched_movie in watched_movies:
             movie_list.append(watched_movie)
     
-    # movie_list에 가장 많이 추가된 영화들 상위 15개 가져옴
-    
+    # movie_list에 가장 많이 추가된 영화들 상위 15개 가져옴    
     recommend_movie_list = [i[0] for i in Counter(movie_list).most_common()][:15]
     serializer = MovieListSerializer(recommend_movie_list, many=True)       
     return Response(serializer.data)

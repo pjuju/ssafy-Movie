@@ -9,7 +9,7 @@
         :to="{ name: 'reviewDetail', params: { moviePk: review.movie.id, reviewPk: review.id } }">
 
       <div class="pt-1 card-body pb-0">
-          <p>{{review.movie.title}}</p>
+          <p>{{review.movie.title | cutTitle }}</p>
             <p class="fw-bold">{{review.title | cutTitle }}</p>      
           <div>
           <i v-for="i in review.rank" :key="i" style="color:orange;" class="fa-solid fa-star mb-3"></i>

@@ -5,7 +5,6 @@ from movies.models import Movie, Review, Comment
 
 
 class FakeUserSerializer(serializers.ModelSerializer):
-
     class MovieListSerializer(serializers.ModelSerializer):
         class Meta:
             model = Movie
@@ -29,7 +28,6 @@ class FakeUserSerializer(serializers.ModelSerializer):
     like_reviews = ReviewListSerializer(many=True, read_only=True)
     comments = CommentListSerializer(many=True, read_only=True)
     like_comments = CommentListSerializer(many=True, read_only=True)
-
     
     class Meta:
         model = get_user_model()        
@@ -43,13 +41,6 @@ class UserSerializer(FakeUserSerializer):
     class Mete:
         model = get_user_model()
         fields = '__all__'
-
-
-
-# class UserSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ["url", "username", "email", "is_staff"]
 
 
 class UserListSerializer(FakeUserSerializer):
