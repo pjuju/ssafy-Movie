@@ -25,7 +25,7 @@
               </div>
             </div>
             <div class="d-flex justify-content-center align-items-center mt-4" v-if="videoUrl">
-              <div class="ratio ratio-16x9 ms-2" style="width:80%; height:80%;">
+              <div class="ratio ratio-16x9 ms-2 mb-4">
                 <iframe :src="videoUrl" title="YouTubevideo" allowfullscreen></iframe>
               </div>
             </div>
@@ -100,7 +100,6 @@
           <div>
             <i class="fa-solid fa-user me-1"></i>
             <span class="text-black me-1">{{review.user.username}}</span>
-            <small><i class="fa-solid fa-circle-check" style="color: red;"></i></small>
           </div>
           <div class="rank-border">
             <i style="color:orange;" class="fa-solid fa-star"></i>
@@ -190,13 +189,14 @@ export default {
 
   },
   created(){
-    this.fetchMovie(this.moviePk)
     this.fetchVideo(this.moviePk)
+    this.fetchMovie(this.moviePk)
   },
   updated(){
     this.onLike()
     this.onWatch()
   },
+
   filters : {  
     cutDate(value){
       const ymd = value.slice(0,10)

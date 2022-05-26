@@ -4,7 +4,7 @@
     <b-navbar type="dark" variant="dark" class="justify-content-between">
       <div>OHFLIX</div>
 
-      <div class="d-flex align-items-center">     
+      <div class="d-flex align-items-center search-margin">     
       <b-form @submit.prevent="search">
         <b-form-input id="input-1" v-model="title" placeholder="영화를 검색하세요.">       
         </b-form-input>
@@ -75,24 +75,8 @@ export default {
 </script>
 
 <style>
-#animated input[type=text] {
-    width: 300px;
-    box-sizing: border-box;
-    border: 1px solid #c8c8c8;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: white;
-    padding: 12px 20px 12px 40px;
-    -webkit-transition: width 0.5s ease-out;
-    transition: width 0.5s ease-out;
-}
-
-#animated input[type=text]:focus {
-    width: 500px;
-}
-
-#animated i {
-  position: relative;
-  left: 30px;
+.search-margin{
+  margin-left: 18rem;
+  height: 3rem;
 }
 </style>

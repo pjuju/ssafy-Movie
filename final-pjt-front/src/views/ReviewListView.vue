@@ -35,9 +35,7 @@
   <div v-if="!isLoggedIn">
     <router-link :to="{name:'login'}">로그인</router-link>이 필요합니다.
   </div>
-  <div v-if="!reviews.length">
-    REVIEW가 없어요 ㅠ_ㅠ
-  </div>
+
   </div>
 </template>
 

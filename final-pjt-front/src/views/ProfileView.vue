@@ -1,37 +1,60 @@
 <template>
   <div>
-    <h1>{{profileUser.username}}님의 프로필</h1>
-    <div> 
-      팔로우: {{profileUser.followings.length}}
-      팔로워: {{profileUser.followers.length}}
+    <div v-if="!profileUser.username">
+      사용자가 존재하지 않습니다.
     </div>
-    <div>팔로우 목록 
-      <div v-for="following in profileUser.followings" :key="following.username">
-        <router-link :to=" { name: 'profile', params: { username: following.username } }"  class="text-decoration-none text-black" >
-          <p class="mb-0 text-white">{{following.username}}</p>
-        </router-link>
-      </div>
+    <div v-if="profileUser.username">
+    <div class="d-flex justify-content-center align-items-center">
+      <img src="@/assets/logo.png" alt="" style="width:60px">
+      <h2>{{profileUser.username}}님의 프로필</h2>
     </div>
-    <div>팔로워 목록
-      <div v-for="follower in profileUser.followers" :key="follower.username">
-        <router-link :to=" { name: 'profile', params: { username: follower.username } }"  class="text-decoration-none text-black" >
-          <p class="mb-0 text-white">{{follower.username}}</p>
-        </router-link>
-     </div>
-    </div>
-   
-    <i v-if="isLiked" @click="clickFollow" class="fa-solid fa-heart" style="color:red; cursor:pointer;"></i>
-    <i v-if="!isLiked" @click="clickFollow" class="fa-regular fa-heart" style="color:red; cursor:pointer;"></i>
 
-    <div v-if="profileUser.like_movies">
-      <p class="d-flex justify-content-start ms-3 fs-4">{{profileUser.username}}님이 찜한 영화 : {{profileUser.like_movies.length}}개</p>
+    <div style="padding:0vw 20vw;">
+    <div class="mb-3">
+      <a class="text-white text-decoration-none" v-b-toggle href="#example-following" @click.prevent="changeCheck">팔로잉:{{followings}} </a>
+      <a class="text-white text-decoration-none me-1" v-b-toggle href="#example-follower" @click.prevent="changeCheck">팔로워:{{followers}} </a>
+    </div>
+    <b-collapse id="example-following" v-if="followings && check">
+      <b-card title="">
+        <div v-for="following in profileUser.followings" :key="following.username">
+          <router-link :to=" { name: 'profile', params: { username: following.username } }"  class="text-decoration-none text-black" >
+            <p class="mb-0 text-black">{{following.username}}</p>
+          </router-link>
+        </div>
+      </b-card>
+    </b-collapse>
+    <b-collapse id="example-follower" v-if="followers && check">
+      <b-card title="">
+        <div v-for="follower in profileUser.followers" :key="follower.username">
+
+          <router-link :to=" { name: 'profile', params: { username: follower.username } }"  class="text-decoration-none text-black" >
+            <p class="mb-0 text-black">{{follower.username}}</p>
+          </router-link>
+        </div>
+      </b-card>
+    </b-collapse>
+
+    </div>
+    <div v-if="profileUser.username !== currentUser.username">
+      <i v-if="isLiked" @click="clickFollow" class="fa-solid fa-heart" style="color:red; cursor:pointer;"></i>
+      <i v-if="!isLiked" @click="clickFollow" class="fa-regular fa-heart" style="color:red; cursor:pointer;"></i>
+    </div>
+
+
+    <div v-if="!likeMovies">
+      <p class="text-start fs-4">찜한 영화가 없습니다</p>
+    </div>
+
+    <div v-if="likeMovies">
+      <p class="d-flex justify-content-start fs-4">{{profileUser.username}}님이 찜한 영화</p>
       <div v-if="profileUser.like_movies.length >= 8">
         <vue-glide 
           class="glide__track"
           data-glide-el="track"
           ref="slider"
-          type="carousel"
-          :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
+          type="slider"
+          :bound="true"
+          :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 4}, 1000: {perView: 3} }"
           :gap="10">
           <vue-glide-slide v-for="movie in profileUser.like_movies" :key="movie.id">
               <movie-card :movie="movie" />
@@ -46,16 +69,18 @@
         </div>
       </div>   
     </div> 
-
-    <div v-if="profileUser.watched_movies">
-      <p class="d-flex justify-content-start ms-3 fs-4">{{profileUser.username}}님이 시청한 영화 : {{profileUser.watched_movies.length}}개</p>
-        <div v-if="profileUser.watched_movies.length > 8">
+    <div v-if="!watchedMovies">
+     <p class="text-start fs-4"> 시청한 영화가 없습니다.</p>
+    </div>
+    <div v-if="watchedMovies" >
+      <p class="d-flex justify-content-start fs-4">{{profileUser.username}}님이 시청한 영화</p>
+        <div v-if="profileUser.watched_movies.length >= 8">
           <vue-glide 
             class="glide__track"
             data-glide-el="track"
             ref="slider"
             type="carousel"
-            :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 3} }"
+            :breakpoints="{ 3000: {perView: 8}, 1500: {perView: 5}, 1000: {perView: 2} }"
             :gap="10">
             <vue-glide-slide v-for="movie in profileUser.watched_movies" :key="movie.id">
                 <movie-card :movie="movie" />
@@ -71,14 +96,16 @@
         </div>    
     </div>
 
-
-    <div v-if="profileUser.reviews">
-      <p class="d-flex justify-content-start ms-3 fs-4">{{profileUser.username}}님의 리뷰 : {{profileUser.reviews.length}}개</p>
+    <div class="text-start" v-if="!reviewCount">
+      <p class="fs-4">리뷰가 존재하지않습니다.</p>
+    </div>
+    <div v-if="reviewCount">
+      <p class="d-flex justify-content-start fs-4">{{profileUser.username}}님의 리뷰</p>
       <div class="row row-cols-2 row-cols-md-4 row-cols-xl-6">
-      <review-list-item class="mb-4" v-for="review in profileUser.reviews" :key="review.id" :review="review"></review-list-item>
+        <profile-review-item class="mb-4" v-for="review in profileUser.reviews" :key="review.id" :review="review"></profile-review-item>
       </div>
     </div>
-    
+    </div>
     
   </div>
 </template>
@@ -94,18 +121,19 @@
 import { mapActions, mapGetters } from 'vuex'
 import { Glide, GlideSlide } from 'vue-glide-js'
 import MovieCard from '@/components/MovieCard.vue'
-import ReviewListItem from '@/components/ReviewListItem.vue'
+import ProfileReviewItem from '@/components/ProfileReviewItem.vue'
 export default {
   name:'ProfileView',
   components:{    
     MovieCard,
-    ReviewListItem,
+    ProfileReviewItem,
     [Glide.name]: Glide,
     [GlideSlide.name]: GlideSlide,
   },
   data(){
     return{       
-      isLiked: false,    
+      isLiked: false,
+      check: false,
     }
   },
 
@@ -116,6 +144,21 @@ export default {
     },
     getUsername(){
       return this.$route.params.username
+    },
+    followings(){
+      return this.profileUser.followings?.length
+    },
+    followers(){
+      return this.profileUser.followers?.length
+    },
+    reviewCount(){
+      return this.profileUser.reviews?.length
+    },
+    watchedMovies(){
+      return this.profileUser.watched_movies?.length
+    },
+    likeMovies(){
+      return this.profileUser.like_movies?.length
     }
   },
 
@@ -131,20 +174,25 @@ export default {
       else {this.isLiked = false}             
     },
     clickFollow(){      
-      this.follow(this.username)
-    },    
+      this.follow(this.getUsername)
+    },
+    changeCheck(){
+      this.check = !this.check
+    }
   },
   created(){
     this.fetchProfileUser(this.getUsername)
   },
-  
-  
-
 
   updated(){
     this.onLike()
-    // this.fetchProfileUser(this.getUsername)
   },
+  watch: {
+    $route(){
+      this.changeCheck()
+      this.fetchProfileUser(this.getUsername)
+    }
+  }
 }
 </script>
 

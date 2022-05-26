@@ -26,6 +26,7 @@ export default {
     followMovies: {},
     isLiked: null,
     searchMovieList:{},
+    videoUrl: null,
   },
   getters:{
     movie: state => state.movie,
@@ -239,12 +240,16 @@ export default {
         params
       })
       .then(res=>{
-        console.log(res.data)
+        if(res.data.results.length > 0){
         const videoKey = res.data.results[0].key
         const youtubeUrl = `https://www.youtube.com/embed/${videoKey}?rel=0`
         commit('FETCH_VIDEO', youtubeUrl)
+      }
+      else{
+        commit('FETCH_VIDEO', false)
+      }
       })
-      .catch(err=> console.log(err.response))
+      .catch(err=> console.error(err))
     }
 
 

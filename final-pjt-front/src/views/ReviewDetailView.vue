@@ -5,7 +5,7 @@
         <router-link :to="{name:'login'}">로그인</router-link>이 필요합니다.
       </p>
     </div>
-    <div v-if="isLoggedIn">
+    <div v-if="isLoggedIn && review.user">
     <p class="text-start text-muted">
       <router-link :to="{name:'review'}" class="text-decoration-none text-muted">
       리뷰
@@ -23,13 +23,13 @@
       <h1>{{review.title}}</h1>
       <div class="d-flex justify-content-between">
         <span><small> 작성자: {{review.user.username}}</small></span>
-        <span><small> {{review.updated_at | yyyyMMdd}}</small></span>  
+        <span><small> {{review.updated_at | cutDate}}</small></span>  
       </div>
     <div v-if="isAuthor" class="d-flex justify-content-end align-items-center"> 
       <router-link :to="{name: 'reviewEdit', params: {moviePk: pk.moviePk, reviewPk: pk.reviewPk} }">
         <i class="fa-solid fa-pen-to-square me-1"></i>
       </router-link>      
-      <i class="fa-solid fa-trash-can" @click="deleteReview(pk)"></i>
+      <i class="fa-solid fa-trash-can" style="cursor:pointer;" @click="deleteReview(pk)"></i>
     </div>      
     </div>
     <hr>
@@ -115,25 +115,10 @@ export default {
     this.onLike()
   },
   filters:{  
-    yyyyMMdd(value){
-
-      if(value == '') return '';
-      
-      var js_date = new Date(value);
-      // 연도, 월, 일 추출
-      var year = js_date.getFullYear();
-      var month = js_date.getMonth() + 1;
-      var day = js_date.getDate();
-
-      if(month < 10){
-        month = '0' + month;
-      }
-
-      if(day < 10){
-        day = '0' + day;
-      }
-
-      return year + '-' + month + '-' + day;
+    cutDate(value){
+      const ymd = value.slice(0,10)
+      const hm = value.slice(11,16)
+      return ymd + ' ' + hm
     },
   }
 

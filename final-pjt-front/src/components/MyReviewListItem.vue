@@ -15,8 +15,8 @@
           <i v-for="i in review.rank" :key="i" style="color:orange;" class="fa-solid fa-star mb-3"></i>
           </div>
           <div>
-          <i class="fa-solid fa-comment" style="color:blue;"></i> {{review.comments_count}}
-          <i class="fa-solid fa-heart" style="color:red;"></i> {{likeCount}}
+          <i class="fa-solid fa-comment"></i> {{review.comments_count}}
+          <i class="fa-solid fa-heart" ></i> {{likeCount}}
           </div>
       </div>
         <p class="text-muted pb-0">{{review.user.username}}</p>       

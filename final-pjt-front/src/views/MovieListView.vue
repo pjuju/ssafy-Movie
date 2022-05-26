@@ -140,7 +140,7 @@
     </vue-glide>
 
     <p class="d-flex justify-content-start ms-3 fs-4">출시 예정 영화</p>
-    <vue-glide v-if="upComing.length"
+    <vue-glide v-if="upComing.length > 8"
       class="glide__track"
       data-glide-el="track"
       ref="slider"
@@ -152,6 +152,11 @@
         <movie-card :movie="movie" />
       </vue-glide-slide>
     </vue-glide>
+    <div v-if="upComing.length <= 8">
+      <div v-for="movie in upComing" :key="movie.id">
+        <movie-card :movie="movie" />
+      </div>
+    </div>
 
     <p class="d-flex justify-content-start ms-3 fs-4">현재 상영 중인 영화</p>
     <vue-glide v-if="nowPlaying.length >= 8"
