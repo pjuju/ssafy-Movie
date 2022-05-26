@@ -21,6 +21,8 @@ export default {
     movie: moviePk => HOST + MOVIES + `${moviePk}/`,
     likemovie: moviePk => HOST + MOVIES + `${moviePk}/` + 'like/',
     watchedmovie: moviePk => HOST + MOVIES + `${moviePk}/` + 'watch/',
+    serachmovies: title => HOST + MOVIES + `serach_list/${title}/`,
+
 
     // 그냥 영화들
     nowPlaying: () => HOST + MOVIES + 'now_playing/',

@@ -1,15 +1,21 @@
 <template>
 <div class="mb-4">
   <div>
-    <b-navbar type="dark" variant="dark" class="d-flex justify-content-start">
+    <b-navbar type="dark" variant="dark" class="justify-content-between">
+      <div>OHFLIX</div>
+      <b-form @submit.prevent="search">
+        <b-form-input id="input-1" v-model="title" placeholder="영화를 검색하세요.">         
+        </b-form-input>
+      </b-form>
+      
       <b-navbar-nav>
         <b-nav-item>
           <router-link :to=" { name: 'movies' }" class="text-decoration-none">
-            HOME
+            MOVIES
           </router-link>
         </b-nav-item>
         <b-nav-item v-if="isLoggedIn">
-          <router-link :to=" { name: 'review' }" class="text-decoration-none">REVIEW</router-link>
+          <router-link :to=" { name: 'review' }" class="text-decoration-none">REVIEWS</router-link>
         </b-nav-item>
         <b-nav-item v-if="!isLoggedIn">
           <router-link :to=" { name: 'signup' }" class="text-decoration-none">회원가입</router-link>
@@ -29,6 +35,7 @@
           <b-dropdown-item @click="logout" class="text-black">로그아웃</b-dropdown-item>
         </b-nav-item-dropdown>
       </div>
+        
       </b-navbar-nav>
     </b-navbar>
   </div>
@@ -39,10 +46,16 @@
 import { mapActions, mapGetters } from 'vuex'
 export default {
   name:'NavBar',
+  data(){
+    return {     
+      title: '',     
+      }
+    },  
   methods:{
     ...mapActions(['logout']),
-    test(){
-      console.log('되나요?')
+    search(){   
+      this.$router.push({name:'movieSearchList', params:{title:this.title}})   
+      this.title = ''
     }
   },
   computed:{
