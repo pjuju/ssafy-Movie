@@ -21,7 +21,8 @@ class FakeUserSerializer(serializers.ModelSerializer):
             model = Comment
             fields = '__all__'
 
-    like_movies = MovieListSerializer(many=True, read_only=True)   
+    like_movies = MovieListSerializer(many=True, read_only=True)
+    watched_movies = MovieListSerializer(many=True, read_only=True)   
     reviews = ReviewListSerializer(many=True, read_only=True)
     like_reviews = ReviewListSerializer(many=True, read_only=True)
     comments = CommentListSerializer(many=True, read_only=True)
@@ -35,7 +36,7 @@ class FakeUserSerializer(serializers.ModelSerializer):
 
 class UserSerializer(FakeUserSerializer):
     followings = FakeUserSerializer(many=True, read_only=True)
-    followed = FakeUserSerializer(many=True, read_only=True)
+    followers = FakeUserSerializer(many=True, read_only=True)
 
     class Mete:
         model = get_user_model()
