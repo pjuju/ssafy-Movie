@@ -12,7 +12,7 @@ import ReviewNewView from '@/views/ReviewNewView.vue'
 import ReviewEditView from '@/views/ReviewEditView.vue'
 import ReviewDetailView from '@/views/ReviewDetailView.vue'
 import ReviewListView from '@/views/ReviewListView.vue'
-
+import MovieSearchListView from '@/views/MovieSearchListView.vue'
 
 import NotFound404 from '@/views/NotFound404.vue'
 
@@ -66,6 +66,11 @@ const routes = [
     path: '/reviews',
     name: 'review',
     component: ReviewListView
+  },
+  {
+    path: '/search/:title',
+    name: 'movieSearchList',
+    component: MovieSearchListView
   },
   {
     path: '/404',

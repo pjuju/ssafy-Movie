@@ -25,6 +25,7 @@ export default {
     ageMovies:{},
     followMovies: {},
     isLiked: null,
+    searchMovieList:{},
   },
   getters:{
     movie: state => state.movie,
@@ -38,6 +39,7 @@ export default {
     followMovies: state => state.followMovies,
     movieimgUrl: state => state.movieimgUrl,
     moviebackimgUrl: state => state.moviebackimgUrl,
+    searchMovieList: state => state.searchMovieList,
 
   },
   mutations:{
@@ -69,6 +71,9 @@ export default {
     },
     FETCH_FOLLOW_MOVIES(state, movies){
       state.followMovies = movies
+    },
+    FETCH_SEARCH_MOVIES(state,movies){
+      state.searchMovieList = movies
     }
 
   },
@@ -211,6 +216,18 @@ export default {
       })
       .catch(err =>
         console.log(err.response))
+    },
+    fetchSearchList({commit}, title){
+      axios({
+        method:'get',
+        url: drf.movies.serachmovies(title),
+      })
+      .then(res=>{
+        commit('SET_SEARCH_MOVIES', res.data)
+      })
+      .catch(err=>{
+        console.log(err.response)
+      })
     },
 
 
