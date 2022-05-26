@@ -22,7 +22,7 @@
     <div class="content-title text-start">
       <h1>{{review.title}}</h1>
       <div class="d-flex justify-content-between">
-        <span><small> 작성자: {{review.user.username}}</small></span>
+        <span><small> 작성자: <router-link class="text-decoration-none text-white" :to="{ name:'profile', params:{ username: review.user.username} }">{{review.user.username}}</router-link></small></span>
         <span><small> {{review.updated_at | cutDate}}</small></span>  
       </div>
     <div v-if="isAuthor" class="d-flex justify-content-end align-items-center"> 
@@ -39,7 +39,7 @@
       <span><i style="color:yellow;" class="fa-solid fa-star"></i>
       <span>{{review.rank}}</span></span>
       </div>
-      <h5 class="text-start">{{review.content}} </h5>
+      <h5 class="text-start" style="letter-spacing:0.5px;">{{review.content}} </h5>
     </div>
     <h5>
     <i v-if="isLiked" @click="clickLike" class="fa-solid fa-heart" style="color:red; cursor:pointer;"></i>

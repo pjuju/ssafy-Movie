@@ -5,7 +5,6 @@
     </div>
     <div v-if="profileUser.username">
     <div class="d-flex justify-content-center align-items-center">
-      <img src="@/assets/logo.png" alt="" style="width:60px">
       <h2>{{profileUser.username}}님의 프로필</h2>
     </div>
 
@@ -39,6 +38,7 @@
       <i v-if="isLiked" @click="clickFollow" class="fa-solid fa-heart" style="color:red; cursor:pointer;"></i>
       <i v-if="!isLiked" @click="clickFollow" class="fa-regular fa-heart" style="color:red; cursor:pointer;"></i>
     </div>
+    <hr>
 
 
     <div v-if="!likeMovies">
@@ -69,6 +69,8 @@
         </div>
       </div>   
     </div> 
+    <hr>
+
     <div v-if="!watchedMovies">
      <p class="text-start fs-4"> 시청한 영화가 없습니다.</p>
     </div>
@@ -95,7 +97,7 @@
           </div>
         </div>    
     </div>
-
+    <hr>
     <div class="text-start" v-if="!reviewCount">
       <p class="fs-4">리뷰가 존재하지않습니다.</p>
     </div>

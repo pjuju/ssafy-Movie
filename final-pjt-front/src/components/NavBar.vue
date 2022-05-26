@@ -1,8 +1,14 @@
 <template>
 <div class="mb-4">
   <div>
-    <b-navbar type="dark" variant="dark" class="justify-content-between">
-      <div>OHFLIX</div>
+    <b-navbar type="dark pt-3" class="justify-content-between align-items-center">
+      <div>
+      <h5 class="fw-bold"> 
+          <router-link :to=" { name: 'movies' }" class="text-decoration-none">
+            SSAFY
+          </router-link>        
+      </h5>
+      </div>
 
       <div class="d-flex align-items-center search-margin">     
       <b-form @submit.prevent="search">
@@ -67,16 +73,13 @@ export default {
   },
   computed:{
     ...mapGetters(['isLoggedIn', 'currentUser']),
-    // username(){
-    //   return this.currentUser.username ? this.currentUser.username : 'guest'
-    // },
   },
 }
 </script>
 
 <style>
 .search-margin{
-  margin-left: 18rem;
+  margin-left: 11rem;
   height: 3rem;
 }
 </style>

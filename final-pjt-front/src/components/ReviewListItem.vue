@@ -19,6 +19,8 @@
           <i class="fa-solid fa-heart"></i> {{likeCount}}
           </div>
       </div>
+      </router-link>
+      <router-link class="text-decoration-none text-white" style="background-color:rgba( 48, 47, 48)" :to="{ name:'profile', params:{ username: review.user.username} }">
         <p class="text-muted pb-0">{{review.user.username}}</p>       
 
 

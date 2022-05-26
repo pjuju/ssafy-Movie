@@ -28,6 +28,7 @@ export default {
     nowPlaying: () => HOST + MOVIES + 'now_playing/',
     upcoming: () => HOST + MOVIES + 'upcoming/',
     popular: () => HOST + MOVIES + 'popular/',
+    topRated: () => HOST + MOVIES + 'top_rated/',
 
     // 알고리즘
     likemovies: () => HOST + MOVIES + 'like_list/',

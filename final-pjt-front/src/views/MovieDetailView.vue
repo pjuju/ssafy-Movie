@@ -34,11 +34,8 @@
         </div>
       </div>
     </div>
-
-
-
     <hr>
-    <div>
+    <div class="text-start">
       <router-link :to="{name: 'review'}" class="text-decoration-none text-white">
         <h4>Review</h4>
       </router-link>
@@ -99,7 +96,8 @@
         style="background-color: rgba( 211, 211, 211)">
           <div>
             <i class="fa-solid fa-user me-1"></i>
-            <span class="text-black me-1">{{review.user.username}}</span>
+            <span class="text-black me-1"> <router-link class="text-decoration-none text-black" :to="{ name:'profile', params:{ username: review.user.username} }">
+            {{review.user.username}}</router-link></span>
           </div>
           <div class="rank-border">
             <i style="color:orange;" class="fa-solid fa-star"></i>
@@ -126,9 +124,28 @@
       </router-link>
       </div>
     </div>
-      
     </div>
     </div>
+    <hr>
+    <p class="d-flex justify-content-start ms-3 fs-4">{{movie.title}} 관련 영화</p>
+    <vue-glide v-if="similarMovies.length >= 8"
+      class="glide__track"
+      data-glide-el="track"
+      ref="slider"
+      type="slider"
+      :bound="true"
+      :breakpoints="{ 3000: {perView: 7}, 1500: {perView: 4}, 1000: {perView: 2} }"
+      :gap="10">
+      <vue-glide-slide v-for="movie in similarMovies" :key="movie.id">
+        <movie-card :movie="movie" />
+      </vue-glide-slide>
+    </vue-glide>
+    <div v-if="similarMovies.length < 8">
+      <div v-for="movie in similarMovies" :key="movie.id">
+        <movie-card :movie="movie" />
+      </div>
+    </div>
+    
   </div>
   
 </template>
@@ -139,6 +156,10 @@
 
 import { mapActions, mapGetters } from 'vuex'
 import _ from 'lodash'
+import MovieCard from '@/components/MovieCard.vue'
+
+import { Glide, GlideSlide } from 'vue-glide-js'
+
 export default {
   name:'MovieDetailView',
   data(){
@@ -148,16 +169,21 @@ export default {
       isWatched: false,
     }
   },
+  components:{
+    MovieCard,
+    [Glide.name]: Glide,
+    [GlideSlide.name]: GlideSlide
+  },
   computed:{
     ...mapGetters(['movie', 'movieimgUrl', 'moviebackimgUrl',
-     'isLoggedIn','currentUser', 'videoUrl']),
+     'isLoggedIn','currentUser', 'videoUrl','similarMovies']),
     manyLikeReviews(){
       return _.sortBy(this.movie.reviews, 'like_users_count').reverse()
     }
 
   },
   methods:{
-    ...mapActions(['fetchMovie', 'likeMovie', 'watchMovie', 'fetchVideo']),
+    ...mapActions(['fetchMovie', 'likeMovie', 'watchMovie', 'fetchVideo','fetchSimilar']),
     reviewNew(){
       this.$router.push({name: 'reviewNew', params: {moviePk: this.movie.id}})
     },
@@ -189,13 +215,23 @@ export default {
 
   },
   created(){
-    this.fetchVideo(this.moviePk)
-    this.fetchMovie(this.moviePk)
+    console.log(this.$route.params.moviePk)
+    this.fetchSimilar(this.$route.params.moviePk)
+    this.fetchVideo(this.$route.params.moviePk)
+    this.fetchMovie(this.$route.params.moviePk)
+    
   },
   updated(){
     this.onLike()
     this.onWatch()
   },
+  watch:{
+    $route(){
+      this.fetchSimilar(this.$route.params.moviePk)
+      this.fetchMovie(this.$route.params.moviePk)
+    }
+  },
+
 
   filters : {  
     cutDate(value){

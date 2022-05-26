@@ -1,5 +1,5 @@
 <template>
-  <div class= "movie-poster">       
+  <div class= "movie-poster">
       <router-link :to=" { name: 'movie', params: { moviePk: movie.id } }">
         <img :src="imgUrl" class="m-1 rounded-3 shadow-sm" style="height: 300px; width: 200px; " alt="img">
       </router-link>     
@@ -12,9 +12,6 @@ export default {
   name:'PopularMovie',
   props:{
     movie:Object,
-  },
-  methods:{
-    
   },
   data: function(){
   return {

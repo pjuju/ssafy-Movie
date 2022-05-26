@@ -2,7 +2,9 @@
   <div class="comment-box">
     <div class="user-box d-flex">
       <small><i class="fa-solid fa-user"></i></small>
-      <p class="ms-1 pt-0"><small>{{comment.user.username}}</small></p>
+      <p class="ms-1 pt-0"><small>
+        <router-link class="text-decoration-none text-white" :to="{ name:'profile', params:{ username: comment.user.username} }">
+          {{comment.user.username}}</router-link></small></p>
       <p class="text-muted text-end ms-2"><small> {{comment.updated_at | cutDate }}</small></p>
       <span v-if="currentUser.username === comment.user.username && !isEditing" class="ms-2">
       <i class="fa-solid fa-pen-to-square me-1" @click="switchIsEditing"></i>
@@ -24,16 +26,6 @@
       </b-form>
     </span>
 
-    <!-- <b-form @submit.prevent="onSubmit" class="d-flex justify-content-between pb-4" style="width:100%">
-      <b-form-group
-      label-for="input-1"
-      style="width:93%"
-      >
-        <b-form-input id="input-1" v-model="content" required>
-        </b-form-input>
-      </b-form-group>
-      <b-button type="submit" variant="primary">등록</b-button>
-    </b-form> -->
 
   </div>
 </template>

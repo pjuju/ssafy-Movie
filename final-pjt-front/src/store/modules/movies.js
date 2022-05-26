@@ -1,4 +1,5 @@
 import drf from '@/api/drf'
+import router from '@/router'
 // import router from '@/router'
 import axios from 'axios'
 
@@ -27,6 +28,8 @@ export default {
     isLiked: null,
     searchMovieList:{},
     videoUrl: null,
+    similarMovies: {},
+    topRated: {},
   },
   getters:{
     movie: state => state.movie,
@@ -42,6 +45,8 @@ export default {
     moviebackimgUrl: state => state.moviebackimgUrl,
     searchMovieList: state => state.searchMovieList,
     videoUrl: state => state.videoUrl,
+    similarMovies: state => state.similarMovies,
+    topRated: state => state.topRated,
   },
   mutations:{
     FETCH_POPULAR(state, movies){
@@ -57,6 +62,9 @@ export default {
     },
     FETCH_UPCOMING_MOVIES(state, movies){
       state.upComing = movies
+    },
+    FETCH_TOPRATED_MOVIES(state, movies){
+      state.topRated = movies
     },
     FETCH_LIKE_MOVIES(state, movies){
       state.likeMovies = movies
@@ -78,7 +86,10 @@ export default {
     },
     FETCH_VIDEO(state, url){
       state.videoUrl = url
-    }
+    },
+    FETCH_SIMILAR(state, movies){
+      state.similarMovies = movies
+    },
 
   },
   actions:{
@@ -92,7 +103,7 @@ export default {
         commit('FETCH_POPULAR', popular)
       })
       .catch(err=>{
-        console.log(err.response)
+        console.error(err)
       })
     },
     fetchNowPlayingMovies({commit}){
@@ -104,7 +115,7 @@ export default {
         commit('FETCH_NOW_PLAYING', res.data.results)
       })
       .catch(err=>{
-        console.log(err.response)
+        console.error(err)
       })
     },
     fetchUpcomingMovies({commit}){
@@ -116,7 +127,19 @@ export default {
         commit('FETCH_UPCOMING_MOVIES', res.data.results)
       })
       .catch(err=>{
-        console.log(err.response)
+        console.error(err)
+      })
+    },
+    fetchTopRated({commit}){
+      axios({
+        method:'get',
+        url: drf.movies.topRated(),
+      })  
+      .then(res=>{
+        commit('FETCH_TOPRATED_MOVIES', res.data.results)
+      })
+      .catch(err=>{
+        console.error(err)
       })
     },
     fetchLikeMovies({commit, getters}){
@@ -129,7 +152,7 @@ export default {
         commit('FETCH_LIKE_MOVIES', res.data)
       })
       .catch(err=>{
-        console.log(err.response)
+        console.error(err)
       })
     },
     fetchLikeWatched({commit, getters}){
@@ -142,7 +165,7 @@ export default {
         commit('FETCH_LIKE_WATCHED', res.data)
       })
       .catch(err=>{
-        console.log(err.response)
+        console.error(err)
       })
     },
     fetchGenderMovies({commit, getters}){
@@ -155,7 +178,7 @@ export default {
         commit('FETCH_GENDER_MOVIES', res.data)
       })
       .catch(err=>{
-        console.log(err.response)
+        console.error(err)
       })
     },
     fetchAgeMovies({commit, getters}){
@@ -168,7 +191,7 @@ export default {
         commit('FETCH_AGE_MOVIES', res.data)
       })
       .catch(err=>{
-        console.log(err.response)
+        console.error(err)
       })
     },
     fetchFollowMovies({commit, getters}){
@@ -181,7 +204,7 @@ export default {
         commit('FETCH_FOLLOW_MOVIES', res.data)
       })
       .catch(err=>{
-        console.log(err.response)
+        console.error(err)
       })
     },
     fetchMovie({commit}, moviePk){
@@ -190,13 +213,16 @@ export default {
         url: drf.movies.movie(moviePk),
       })
       .then(res=>{
-        const movie = res.data
-        commit('SET_MOVIE', movie)
-      })
+        commit('SET_MOVIE', res.data)
+      }
+      )
       .catch(err=>{
-        console.log(err.response)
+        alert('데이터가 존재하지 않습니다.')
+        router.push({ name: 'movies'})
+        console.error(err)
       })
     },
+
     likeMovie({getters, dispatch}, moviePk){      
       axios({
         method:'post',
@@ -207,7 +233,7 @@ export default {
         dispatch('fetchMovie', moviePk)
       })
       .catch(err =>
-        console.log(err.response))
+        console.error(err))
     },    
     watchMovie({getters, dispatch}, moviePk){      
       axios({
@@ -219,7 +245,7 @@ export default {
         dispatch('fetchMovie', moviePk)
       })
       .catch(err =>
-        console.log(err.response))
+        console.err(err.response))
     },
     fetchSearchList({commit}, title){
       axios({
@@ -230,7 +256,7 @@ export default {
         commit('SET_SEARCH_MOVIES', res.data)
       })
       .catch(err=>{
-        console.log(err.response)
+        console.error(err)
       })
     },
     fetchVideo({commit}, moviePk){
@@ -250,8 +276,19 @@ export default {
       }
       })
       .catch(err=> console.error(err))
+    },
+    fetchSimilar({commit}, moviePk){
+      axios({
+        method: 'get',
+        url: API_URL + `${moviePk}/similar`,
+        params
+      })
+      .then(res=>{
+        commit('FETCH_SIMILAR', res.data.results)
+      })
+     .catch(err=> console.error(err))
+    },
+
     }
 
-
-  },
 }

@@ -2,22 +2,23 @@
   <div id="app">
     <nav-bar></nav-bar>
     <div class="padding">
-    <router-view/>
-    <br>
-    <br>
+      <router-view/>
+      <footer-bar />
     </div>
+
   </div>
 </template>
 
 <script>
 // import axios from 'axios'
 import NavBar from '@/components/NavBar.vue'
+import FooterBar from '@/components/FooterBar.vue'
 import { mapActions } from 'vuex'
 
 export default {
   name: 'App',
   components:{
-    NavBar
+    NavBar, FooterBar
   },
   methods:{
     ...mapActions(['fetchCurrentUser'])
